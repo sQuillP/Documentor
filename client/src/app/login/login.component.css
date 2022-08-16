@@ -1,0 +1,95 @@
+.main{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* background-image:  url(https://www.desktopbackground.org/download/1280x900/2011/07/19/236600_purple-gradient-backgrounds_1920x1080_h.jpg); */
+    background: url(https://www.desktopbackground.org/download/1280x900/2011/07/19/236600_purple-gradient-backgrounds_1920x1080_h.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+.header{ margin-bottom: 50px;}
+.welcome{line-height: 1em; font-size: 3em; color: white;}
+.intro{ font-size: 2.2em; line-height: 1em;}
+
+.login-container{
+    background: #f7f7f7;
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    padding: 0px 0px 20px 00px;
+    margin-bottom: 100px;
+    overflow: hidden;
+}
+
+.login-section{
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px;
+    position: relative;
+}
+
+.input-section{
+    flex-direction: column;
+    box-sizing: border-box;
+    padding-bottom: 5px;
+}
+
+.input{
+    margin: 10px 0;
+    padding: 10px;
+    padding-left: 30px;
+    font-size: 1.2em;
+    border: none;
+    outline: none;
+    transition: 60ms linear box-shadow;;
+}
+
+.input:focus{
+    box-shadow: 0 0 2px 3px var(--app-purple-transparent);
+}
+
+.buttons{
+    padding: 0px 10px;
+}
+
+.img-wrapper{
+    height: 100px;
+    width: 100px;
+    overflow: hidden;;
+    border-radius: 50%;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;;
+}
+
+.submit-btn{
+    padding: 10px;
+    width: 100%;
+    background: var(--app-purple);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: 100ms linear background;
+    cursor: pointer;
+}
+
+.submit-btn:hover{
+    background: #926aa3;
+}
+
+.text{margin: 0; padding: 0;}
+/* .login-title{ font-size: 3em;} */
+.icon{position: absolute; left: 27px; color: rgb(73, 73, 73);}
+.password-icon{top: 95px; }
+.email-icon{top: 35px;}
+.border{border-bottom: 1px solid darkgray;}

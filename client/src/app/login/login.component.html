@@ -1,1 +1,39 @@
-<p>login works!</p>
+<div class="main">
+
+    <div class="header">
+        <h1 class="text welcome">Welcome!</h1>
+    </div>
+
+    <div class="login-container">
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+        <div class="login-section">
+            <h1 class="intro text">Documentor</h1>
+        </div>
+        <div class="login-section">
+            <div class="img-wrapper">
+                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="">
+            </div>
+        </div>
+        <div class="login-section border">
+            <h1 class="login-title text">{{mode==='login'?'Login':'Signup'}}</h1>
+        </div>
+        <div class="login-section input-section">
+            <i class="icon email-icon fa-solid fa-envelope"></i>
+            <input [(ngModel)]="email" type="text" class="input" placeholder="person@gmail.com">
+            <i class="icon password-icon fa-solid fa-key"></i>
+            <input [(ngModel)]="password" type="password" class="input" placeholder="Password">
+        </div>
+        <div class="buttons">
+            <button class="submit-btn" (click)="onSubmit()">{{mode==='login'?'Login':'Signup'}}</button>
+        </div>
+        <div class="login-section">
+            <p *ngIf="mode ==='signup'" class="desc">Already have an account? <span (click)="onChangeSignInMode('login')" [ngStyle]="{'color': '#4c8bf5'}">Click here to login</span></p>
+            <p *ngIf="mode ==='login'" class="desc">Don't have an account? <span (click)="onChangeSignInMode('signup')" [ngStyle]="{'color': '#4c8bf5'}">Click here to signup</span></p>
+        </div>
+        <div *ngIf="displayErrorMessage" [ngStyle]="{'width':'100%', 'text-align':'center'}" class="error-section">
+            <p class="text" [ngStyle]="{'color':'red'}">Invalid email or password</p>
+        </div>
+    </div>
+
+
+</div>

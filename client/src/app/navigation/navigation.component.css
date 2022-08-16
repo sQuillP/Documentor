@@ -1,0 +1,24 @@
+.main{
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--app-purple);
+    border-right: 2px solid rgb(41, 41, 41);
+}
+
+
+.row{
+    padding: 20px;;
+    color: white;
+    transition: 100ms linear background, 100ms linear color;
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+.row:hover{
+    background: white;
+    color: var(--app-purple);
+}
