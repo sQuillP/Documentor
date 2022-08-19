@@ -1,0 +1,80 @@
+<div #overlayRef class="create-document-overlay">
+    <div class="overlay-container">
+        <div class="create-doc-intro">
+            <h1 class="text overlay-header">Create New Document</h1>
+        </div>
+        <div class="document-title">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Document Title</mat-label>
+                <input [(ngModel)]="documentTitle" matInput #message maxlength="25" placeholder="Begin Typing">
+                <mat-hint align="start"><strong>Limit of 20 characters</strong> </mat-hint>
+                <mat-hint align="end">{{message.value.length}} / 25</mat-hint>
+            </mat-form-field>
+        </div>
+        <div class="invite-users">
+            <div (click)="addedMembers=!addedMembers" class="input-title">
+                <i style="margin-right: 5px" *ngIf="!addedMembers" class="fas fa-plus"></i>
+                <i style="margin-right: 5px" *ngIf="addedMembers" class="fas fa-minus"></i>
+                <p class="text title">{{!addedMembers?"Add":"Remove"}} members to document</p>
+            </div>
+            <div *ngIf="addedMembers" class="search-wrapper">
+                <label id="search-label" for="search">Search Users by email</label>
+                <input 
+                #inputRef 
+                id="search" 
+                type="text" 
+                placeholder="bob@example.com"
+                [(ngModel)]="searchValue"
+                (keypress)="onSearchMembers()"
+                >
+                <div *ngIf="showMemberResults" class="search-results">
+                    <!-- Async loop here. -->
+                    <div style="border-bottom: 1px solid rgb(212, 212, 212);" class="title">
+                        <p class="text">Suggested results</p>
+                    </div>
+                    <div matRipple class="result" (click)="onAddTeamMember()">
+                        <div class="img-section">
+                            <div class="img-wrapper">
+                                <img class="img" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="">
+                            </div>
+                        </div>
+                        <div class="res-details">
+                            <div class="res-item">
+                                <p class="text large">William Pattison</p>
+                            </div>
+                            <div class="res-item">
+                                <p class="text">will.m.pattison@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="addedMembers" class="team-list">
+                <!-- index;trackBy:trackByIdx -->
+                <div class="member">
+                    <div class="member-details">
+                        <div class="img-section">
+                            <div style="width: 35px; height:35px;" class="img-wrapper">
+                                <img class="img" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="">
+                            </div>
+                        </div>
+                        <div class="res-details">
+                            <p class="text bold">William Pattison</p>
+                            <p class="text small">will.m.pattison@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="permissions">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button class="radio-btn" value="read">Readonly</mat-radio-button>
+                            <mat-radio-button class="radio-btn" value="modify">Modify</mat-radio-button>
+                            <mat-radio-button class="radio-btn" value="admin">Admin</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="buttons">
+            <button class="create-document" mat-raised-button>Create Document <i class="fa-solid fa-angles-right"></i></button>
+        </div>
+    </div>
+</div>

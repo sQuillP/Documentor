@@ -1,6 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
 html, body { height: 100%; margin: 0; padding: 0;}
+
+
+
+html {
+    background: url(https://www.desktopbackground.org/download/1280x900/2011/07/19/236600_purple-gradient-backgrounds_1920x1080_h.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* .text{ margin: 0; padding: 0;} */
@@ -8,4 +20,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 :root{
     --app-purple: #785189;
     --app-purple-transparent: rgba(120, 81, 137,.6);
+}
+
+::-webkit-scrollbar{
+    width: 3px;
+    background: white;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+
+
+.input{
+    margin: 10px 0;
+    padding: 10px;
+    padding-left: 30px;
+    font-size: 1.2em;
+    border: none;
+    outline: none;
+    transition: 60ms linear box-shadow;;
+}
+
+.input:focus{
+    box-shadow: 0 0 2px 3px var(--app-purple-transparent);
 }
