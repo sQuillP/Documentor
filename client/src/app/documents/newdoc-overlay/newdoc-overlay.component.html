@@ -32,18 +32,23 @@
                     <div style="border-bottom: 1px solid rgb(212, 212, 212);" class="title">
                         <p class="text">Suggested results</p>
                     </div>
-                    <div matRipple class="result" (click)="onAddTeamMember()">
+                    <div 
+                    *ngFor="let user of (fetchedEmails$ | async); let i = index;"
+                    matRipple 
+                    class="result" 
+                    (click)="onAddTeamMember(user)"
+                    >
                         <div class="img-section">
                             <div class="img-wrapper">
-                                <img class="img" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="">
+                                <img class="img" [src]="user.image?user.image:'../../../assets/Blank-profile.png'" alt="">
                             </div>
                         </div>
                         <div class="res-details">
                             <div class="res-item">
-                                <p class="text large">William Pattison</p>
+                                <p class="text large">{{user.name}}</p>
                             </div>
                             <div class="res-item">
-                                <p class="text">will.m.pattison@gmail.com</p>
+                                <p class="text">{{user.email}}</p>
                             </div>
                         </div>
                     </div>
