@@ -4,31 +4,36 @@ const User = require("../models/User");
 const ErrorResponse = require("../utils/ErrorResponse");
 const Permission = require('../models/Permission');
 const mongoose = require("mongoose");
+
+
+
 /**
  * @test: true
  * @desc: Get all documents from database
- * @route: GET api/v1/documents
- * @route: GET /api/v1/users/:userid/documents
- * @param:
- *  - limit: number, limit the number of documents queried from the database
+ * @route: GET api/v1/documents?findTeam=true
+ * @param: findTeam => Get all documents that user is associated with.
  * @access: Private
+ * NOTE: Fix the getDocuments without any params with this route.
  */
 exports.getDocuments = asyncHandler( async (req,res,next)=> {
-
+    console.log("in documents route")
     let limit = req.params.limit;
     let documents = null;
-    if(req.params.userid){
-        documents = await Document.find({team: {$in: [req.params.userid]}});
-
+    console.log("in req.user before error",req.user);
+    if(req.query.findTeam && req.query.findTeam.toLowerCase() === "true"){
+        console.log('in findTeam')
+        documents = await Document.find({team: {$in: [req.user._id]}});
     }
     else
-        documents = await Document.find().limit(limit || 50);
+        documents = await Document.find({author: req.user._id}).limit(limit || 50);
     res.status(200).json({
         success: true,
         count: documents.length,
         data: documents
     });
 });
+
+
 
 /**
  * @test: true

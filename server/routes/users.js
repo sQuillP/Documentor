@@ -13,13 +13,17 @@ const {
 
 const documents = require('./documents');
 
-router.use("/:userid/documents",documents);
+// router.use("/:userid/documents",documents);
+
+router.use(authenticate);
 
 router.route("/")
 .get(getUsers)
 .post(createUser)
 .delete(deleteUser);
 
+
+/**Add more middleware for delete and update */
 router.route("/:userid")
 .get(getUser)
 .put(updateUser)

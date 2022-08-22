@@ -25,6 +25,12 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
+import { ViewdocumentComponent } from './documents/viewdocument/viewdocument.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import {MatMenuModule} from '@angular/material/menu';
+import { RenamePopupComponent } from './documents/rename-popup/rename-popup.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DeletePopupComponent } from './documents/delete-popup/delete-popup.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +40,9 @@ import {MatButtonModule} from '@angular/material/button';
     NavigationComponent,
     DocumentsComponent,
     NewdocOverlayComponent,
+    ViewdocumentComponent,
+    RenamePopupComponent,
+    DeletePopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,6 +50,7 @@ import {MatButtonModule} from '@angular/material/button';
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
 
     /* Material UI imports */
     MatRippleModule,
@@ -53,6 +63,8 @@ import {MatButtonModule} from '@angular/material/button';
     MatSelectModule,
     MatRadioModule,
     MatButtonModule,
+    MatMenuModule,
+    MatDialogModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

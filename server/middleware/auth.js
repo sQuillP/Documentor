@@ -46,25 +46,34 @@ exports.authenticate = async (req,res,next)=> {
  * @desc: Allow document access to users with corresponding permissions
  */
 exports.permit = (...permissions) => async (req,res,next)=> {
-    const document = await Document.findById(req.params.documentid);
-    if(!document)
+    if(req.params.documentid){
+        const document = await Document.findById(req.params.documentid);
+        if(!document)
+            return next(
+                new ErrorResponse(
+                    `Document ${req.params.documentid} does not exist`,
+                    404
+                )
+            );
+        if(req.user.id.toString() === document.author.toString())
+            return next();
+        const permission = await Permission.findOne({
+            user: req.user._id,
+            document: req.params.documentid
+        });
+        if(!permission || !permissions.includes(permission.access)){
+            return next(
+                new ErrorResponse(
+                    `Insufficient permissions`,
+                    401
+                )
+            );
+        }
+    } else if(req.user.position !== "administrator"){
         return next(
             new ErrorResponse(
-                `Document ${req.params.documentid} does not exist`,
-                404
-            )
-        );
-    if(req.user.id.toString() === document.author.toString())
-        return next();
-    const permission = await Permission.findOne({
-        user: req.user._id,
-        document: req.params.documentid
-    });
-    if(!permission || !permissions.includes(permission.access)){
-        return next(
-            new ErrorResponse(
-                `Insufficient permissions`,
-                401
+                `Access denied`,
+                403
             )
         );
     }

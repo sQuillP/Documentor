@@ -17,11 +17,11 @@ const {
 const permissions = require("./permissions");
 const router = express.Router({mergeParams: true});
 
-router.use(authenticate);
 router.use("/:documentid/permissions",permissions);
+router.use(authenticate);
 
 router.route('/')
-.get(permit("readonly","modify","admin"),getDocuments)
+.get(getDocuments)
 .post(createDocument);
 
 

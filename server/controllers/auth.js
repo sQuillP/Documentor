@@ -49,6 +49,7 @@ exports.login = asyncWrapper( async (req,res,next)=> {
  exports.signup = asyncWrapper( async (req,res,next)=> {
 
     // Get the user from the database
+    console.log(req.body)
     const createdUser = await User.create(req.body);
 
     const token = createdUser.getSignedJwtToken();
@@ -85,7 +86,7 @@ exports.login = asyncWrapper( async (req,res,next)=> {
 /**
  * @test: false
  * @desc: Change the password of a current user.
- * @route: POST /api/v1/auth/login
+ * @route: POST /api/v1/auth/updatepassword
  * @access: Private
  */
  exports.updatePassword = asyncWrapper( async (req,res,next)=> {

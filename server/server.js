@@ -5,7 +5,10 @@ const colors = require("colors");
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cookieParser = require("cookie-parser");
-
+const socketIO = require("socket.io");
+const http = require("http");
+const helmet = require("helmet");
+const cors = require("cors");
 /* Routes */
 const documents = require("./routes/documents");
 const users = require("./routes/users");
@@ -18,6 +21,8 @@ dotenv.config({path: "./config/config.env"});
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
+app.use(helmet());
+app.use(cors({origin:["http://localhost:4200"]}));
 
 /* Database connection */
 const loadDB = require("./config/db");
@@ -30,8 +35,18 @@ app.use("/api/v1/permissions",permissions);
 app.use("/api/v1/auth",auth);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
 
-app.listen(5000, ()=> {
-    console.log(`Server running on port ${PORT}`.green.bold);
-});
+const socketServer = http.Server(app);
+const PORT = process.env.PORT || 5000;
+socketServer.listen(PORT);
+
+io = socketIO(socketServer);
+
+io.on("connection",(socket)=> {
+    console.log("foo bar")
+})
+
+
+// app.listen(5000, ()=> {
+//     console.log(`Server running on port ${PORT}`.green.bold);
+// });

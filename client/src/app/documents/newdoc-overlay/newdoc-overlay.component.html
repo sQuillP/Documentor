@@ -1,14 +1,27 @@
 <div #overlayRef class="create-document-overlay">
+    
     <div class="overlay-container">
+        <div (click)="onCloseComponent()" matTooltip="Close" matTooltipPosition="right" class="icon-wrapper">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
         <div class="create-doc-intro">
             <h1 class="text overlay-header">Create New Document</h1>
         </div>
         <div class="document-title">
+            <!-- <form action=""></form> -->
             <mat-form-field class="example-full-width" appearance="fill">
                 <mat-label>Document Title</mat-label>
-                <input [(ngModel)]="documentTitle" matInput #message maxlength="25" placeholder="Begin Typing">
+                <input 
+                [errorStateMatcher]="matcher" 
+                [formControl]="docNameFormControl"
+                matInput 
+                #message 
+                maxlength="25" 
+                placeholder="Begin Typing">
                 <mat-hint align="start"><strong>Limit of 20 characters</strong> </mat-hint>
                 <mat-hint align="end">{{message.value.length}} / 25</mat-hint>
+                <mat-error *ngIf="docNameFormControl.hasError('forbiddenCharacter')">Please use alphanumeric and unerscore characters</mat-error>
+                <mat-error *ngIf="docNameFormControl.hasError('required')">Please specify a name for this document</mat-error>
             </mat-form-field>
         </div>
         <div class="invite-users">
@@ -32,6 +45,8 @@
                     <div style="border-bottom: 1px solid rgb(212, 212, 212);" class="title">
                         <p class="text">Suggested results</p>
                     </div>
+                    <mat-progress-bar class="progress-bar" *ngIf="showQueryBar" mode="query"></mat-progress-bar>
+
                     <div 
                     *ngFor="let user of (fetchedEmails$ | async); let i = index;"
                     matRipple 
@@ -55,31 +70,34 @@
                 </div>
             </div>
             <div *ngIf="addedMembers" class="team-list">
-                <!-- index;trackBy:trackByIdx -->
-                <div class="member">
+                <!-- index;trackBy:trackByIdx helps with ngModel for arrays of data. -->
+                <div *ngFor="let member of team; let i = index; trackBy:trackByIdx;" class="member">
                     <div class="member-details">
                         <div class="img-section">
                             <div style="width: 35px; height:35px;" class="img-wrapper">
-                                <img class="img" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="">
+                                <img class="img" [src]="member.image?member.image:'../../../assets/Blank-profile.png'" alt="">
                             </div>
                         </div>
                         <div class="res-details">
-                            <p class="text bold">William Pattison</p>
-                            <p class="text small">will.m.pattison@gmail.com</p>
+                            <p class="text bold">{{member.name}}</p>
+                            <p class="text small">{{member.email}}</p>
                         </div>
                     </div>
                     <div class="permissions">
-                        <mat-radio-group aria-label="Select an option">
-                            <mat-radio-button class="radio-btn" value="read">Readonly</mat-radio-button>
+                        <mat-radio-group [(ngModel)]="roles[i].access" aria-label="Select an option">
+                            <mat-radio-button class="radio-btn" value="readonly">Readonly</mat-radio-button>
                             <mat-radio-button class="radio-btn" value="modify">Modify</mat-radio-button>
                             <mat-radio-button class="radio-btn" value="admin">Admin</mat-radio-button>
                         </mat-radio-group>
+                    </div>
+                    <div (click)="onRemoveUser(i)" class="remove-user"  matTooltip="Remove user" matTooltipPosition="right">
+                        <i style="font-size:1.2em" class="fa-solid fa-times"></i>
                     </div>
                 </div>
             </div> 
         </div>
         <div class="buttons">
-            <button class="create-document" mat-raised-button>Create Document <i class="fa-solid fa-angles-right"></i></button>
+            <button [disabled]="!!docNameFormControl.errors"  (click)="onCreateDocument()" class="create-document" mat-raised-button>Create Document <i class="fa-solid fa-angles-right"></i></button>
         </div>
     </div>
 </div>

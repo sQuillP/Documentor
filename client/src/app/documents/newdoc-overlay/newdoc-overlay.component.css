@@ -17,6 +17,7 @@
     background-color: white;
     padding: 30px;
     border-radius: 10px;
+    position: relative;
 }
 
 .input-title{
@@ -131,7 +132,32 @@
 .buttons{
     display: flex;
     justify-content: flex-end;
+    margin-top: 15px;
 }
+
+.icon-wrapper{
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    transition: color 100ms linear
+    transform 100ms linear;
+    z-index: 2;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+
+.icon-wrapper:hover{
+    color: rgb(199, 38, 38);
+    transform: scale(1.1);
+}
+
+.remove-user{ 
+    margin: 0px 5px;
+    transition: color 100ms linear;
+    cursor: pointer;
+}
+.remove-user:hover{color: rgb(199,38,38);}
 
 .create-document{ }
 

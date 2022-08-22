@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, catchError, Observable, Subject, tap, throwError } from 'rxjs';
 
 @Injectable({
@@ -8,12 +9,16 @@ import { BehaviorSubject, catchError, Observable, Subject, tap, throwError } fro
 export class AuthService {
 
   private ENDPOINT = "http://localhost:5000/api/v1/auth";
+  private jwt:JwtHelperService;
 
   authToken$:BehaviorSubject<string>;
-
+  userId$:BehaviorSubject<any>;
 
   constructor(private http: HttpClient) {
+    this.jwt = new JwtHelperService();
+    let decodedId  = this.jwt.decodeToken(localStorage.getItem("token")).id;
     this.authToken$ = new BehaviorSubject<string>(localStorage.getItem("token"));
+    this.userId$ = new BehaviorSubject<any>(decodedId);
   }
 
 
@@ -24,6 +29,7 @@ export class AuthService {
             console.log(data)
             localStorage.setItem("token",data);
             this.authToken$.next(data);
+            this.userId$.next(this.jwt.decodeToken(data).id);
         }),
         catchError(
           (err)=> throwError(()=>err)

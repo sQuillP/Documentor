@@ -1,0 +1,18 @@
+
+<h1 mat-dialog-title>Rename 'insert document name here'</h1>
+<mat-dialog-content>
+    <mat-form-field class="form-field" appearance="fill">
+        <mat-label>New document name</mat-label>
+        <input 
+        [errorStateMatcher]="matcher"
+        [formControl]="docNameFormControl"
+        autocomplete="off" 
+        matInput [(ngModel)]="data.documentName"
+        >
+        <mat-error *ngIf="docNameFormControl.hasError('required')">Please specify a new name for this document!</mat-error>
+    </mat-form-field>
+</mat-dialog-content>
+<div mat-dialog-actions>
+    <button  mat-stroked-button (click)="onDismiss()">No thanks</button>
+    <button [disabled]="docNameFormControl.errors" mat-raised-button color="primary" [mat-dialog-close]="data.documentName">Ok</button>
+</div>

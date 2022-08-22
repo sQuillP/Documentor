@@ -3,7 +3,8 @@ const router = express.Router();
 const {
     login,
     logout,
-    signup
+    signup,
+    updatePassword
 } = require("../controllers/auth");
 
 router.route("/login")
@@ -14,6 +15,9 @@ router.route("/logout")
 
 router.route("/signup")
 .post(signup);
+
+router.route("/updatepassword")
+.post(updatePassword);
 
 
 module.exports = router;

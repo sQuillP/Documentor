@@ -16,7 +16,15 @@ const User = require("../models/User");
 exports.getUsers = asyncHandler( async(req,res,next)=> {
     
     const limit = req.query.limit || 100;
-    const users = await User.find().limit(limit);
+    let users = null;
+    
+    if(req.query.email){
+        //sanitize email query before executing.
+        req.query.email = req.query.email.replace(/[^0-9a-zA-Z @.]/gi," ")
+        let exp = new RegExp(req.query.email);
+        users = await User.find({email: exp});
+    } else
+        users = await User.find().limit(limit);
 
     res.status(200).json({
         success: true,

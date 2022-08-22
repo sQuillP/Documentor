@@ -1,13 +1,35 @@
-<app-newdoc-overlay></app-newdoc-overlay>
+<app-newdoc-overlay *ngIf="showOverlay" (closeComponent)="onCloseOverlay($event)"></app-newdoc-overlay>
 <div class="main">
     <div class="section">
         <div class="section-title">
             <h1 class="text">My Documents</h1>
         </div>
         <div class="documents-list">
-            <div class="create-document">
+            <div (click)="showOverlay = true" class="create-document">
                 <p class="text new-doc">Create New Document</p>
                 <i class="fas fa-circle-plus i-plus"></i>
+            </div>
+            <!-- ngFor loop here for the fetched documents -->
+            <div *ngFor="let document of (myDocuments$ | async)" class="document">
+                <div class="document-img">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+                <div class="document-card">
+                    <div class="document-card-title">
+                        <p class="card-title text">{{document.title}}</p>
+                    </div>
+                    <div class="document-meta">
+                            <p class="card-text text faded">Last edited at 8:30 PM</p>
+                        <div [matMenuTriggerFor]="menu" class="options-icon-wrapper">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                        <mat-menu #menu="matMenu">
+                            <button (click)="onOpenEditDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
+                            <button (click)="onOpenDeleteDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-trash"></i> Remove</button>
+                            <button mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
+                          </mat-menu>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -16,7 +38,27 @@
             <h1 class="text">Shared With Me</h1>
         </div>
         <div class="documents-list">
-            
+            <div *ngFor="let document of (sharedDocuments$ | async)" class="document">
+                <div class="document-img">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+                <div class="document-card">
+                    <div class="document-card-title">
+                        <p class="card-title text">{{document.title}}</p>
+                    </div>
+                    <div class="document-meta">
+                            <p class="card-text text faded">Last edited at 8:30 PM</p>
+                        <div [matMenuTriggerFor]="menu" class="options-icon-wrapper">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                        <mat-menu #menu="matMenu">
+                            <button (click)="onOpenEditDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
+                            <button (click)="onOpenDeleteDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-trash"></i> Remove</button>
+                            <button mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
+                          </mat-menu>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="empty-message">
             <h2 class="text">No Shared Documents</h2>

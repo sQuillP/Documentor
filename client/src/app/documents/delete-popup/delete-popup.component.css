@@ -1,0 +1,15 @@
+
+/* .buttons{
+    display: flex;
+    justify-content: space-around;
+} */
+
+.btn{
+}
+
+.text{padding: 0px; margin: 0px; text-align: left;}
+
+.content{
+    padding: 20px;
+    
+}
