@@ -1,0 +1,41 @@
+.text{margin: 0px; padding: 0px;;}
+.editor-container{
+    padding: 40px;
+    border-radius: 10px;
+    background: white;
+    color: rgb(17, 17, 17);
+    margin-top: 80px;
+}
+
+.editor-title{
+    font-size: 4em;
+    margin-bottom: 50px;
+}
+
+.btn{margin: 0px 10px;}
+
+.editor-options{
+    display: flex;
+    margin: 15px 0px;
+}
+
+.shared-with, .chip-wrapper{
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+}
+
+.shared-with{
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+    font-size: 1.4em;
+}
+
+.chip-wrapper{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+}
+
+

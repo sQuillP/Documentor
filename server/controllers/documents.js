@@ -128,6 +128,8 @@ exports.createDocument = asyncHandler( async (req,res,next)=> {
             )
         );
     }
+    console.log('in update document');
+    console.log(req.body)
     if(!(await Document.findById(req.params.documentid))){
         return next(
             new ErrorResponse(
@@ -151,10 +153,15 @@ exports.createDocument = asyncHandler( async (req,res,next)=> {
          updatePermissions(req,updatedPermissions);
          await Permission.insertMany(updatedPermissions);
     }
+
+    
+
     let newDoc = await Document.findByIdAndUpdate(req.params.documentid,req.body,{
         returnDocument: "after",
         runValidators: true
     });
+
+
     res.status(201).json({
         success: true,
         data: newDoc

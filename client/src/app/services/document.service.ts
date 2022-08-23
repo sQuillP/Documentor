@@ -8,6 +8,8 @@ export class DocumentService {
 
     private ENDPOINT = "http://localhost:5000/api/v1/documents"
 
+    
+
     constructor(private http: HttpClient){
 
     }
@@ -39,6 +41,15 @@ export class DocumentService {
     }
 
 
+    getDocumentById(id:string):Observable<any> {
+        return this.http.get(`${this.ENDPOINT}/${id}`)
+        .pipe(
+            map((response:any) => response.data),
+            catchError(error => throwError(()=>error))
+        );
+    }
+
+
     /* Create a new document */
     createDocument(title:string, idArr:string[],roles:{user:string, access:string}[]): Observable<any>{
         return this.http.post(`${this.ENDPOINT}`,{title, content: null, team: idArr, roles})
@@ -46,6 +57,16 @@ export class DocumentService {
             map(
                 (response:any) => {return response.data._id;}
             ),
+            catchError(error => throwError(()=>error))
+        );
+    }
+
+
+
+    saveDocument(update:any):Observable<any> {
+        return this.http.put(`${this.ENDPOINT}/${update._id}`,update)
+        .pipe(
+            map((response:any)=> response.success),
             catchError(error => throwError(()=>error))
         );
     }

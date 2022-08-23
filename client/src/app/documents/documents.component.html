@@ -10,8 +10,10 @@
                 <i class="fas fa-circle-plus i-plus"></i>
             </div>
             <!-- ngFor loop here for the fetched documents -->
-            <div *ngFor="let document of (myDocuments$ | async)" class="document">
-                <div class="document-img">
+            <div 
+            *ngFor="let document of (myDocuments$ | async)" 
+            class="document">
+                <div (click)="onViewDocument(document._id)" class="document-img">
                     <i class="fa-solid fa-file-lines"></i>
                 </div>
                 <div class="document-card">

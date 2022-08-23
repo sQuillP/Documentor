@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DocumentService } from '../services/document.service';
 import { DeletePopupComponent } from './delete-popup/delete-popup.component';
@@ -20,7 +21,8 @@ export class DocumentsComponent implements OnInit {
 
   constructor(
     private dialog:MatDialog,
-    private documentService:DocumentService
+    private documentService:DocumentService,
+    private router:Router
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,10 @@ export class DocumentsComponent implements OnInit {
       // Logic for removing a document from the db.
         // this.documentService.deleteDocument()
     });
+  }
+
+  onViewDocument(documentId:string):void{
+    this.router.navigate(["documents",documentId]);
   }
 
 }

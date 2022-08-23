@@ -11,6 +11,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { NewdocOverlayComponent } from './documents/newdoc-overlay/newdoc-overlay.component';
 
+/* ng-quill module */
+import { QuillModule } from 'ngx-quill'
+import { modules } from './util/quill.config';
+
+
 /* Material UI modules */
 import {MatRippleModule} from '@angular/material/core';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -31,6 +36,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import { RenamePopupComponent } from './documents/rename-popup/rename-popup.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DeletePopupComponent } from './documents/delete-popup/delete-popup.component';
+import { NavPopupComponent } from './navigation/nav-popup/nav-popup.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -43,6 +50,7 @@ import { DeletePopupComponent } from './documents/delete-popup/delete-popup.comp
     ViewdocumentComponent,
     RenamePopupComponent,
     DeletePopupComponent,
+    NavPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +59,11 @@ import { DeletePopupComponent } from './documents/delete-popup/delete-popup.comp
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+
+    /**Last left off here */
+    QuillModule.forRoot({
+      modules
+    }),
 
     /* Material UI imports */
     MatRippleModule,
@@ -65,6 +78,7 @@ import { DeletePopupComponent } from './documents/delete-popup/delete-popup.comp
     MatButtonModule,
     MatMenuModule,
     MatDialogModule,
+    MatChipsModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

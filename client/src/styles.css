@@ -8,11 +8,12 @@ html, body { height: 100%; margin: 0; padding: 0;}
 
 
 html {
-    background: url(https://www.desktopbackground.org/download/1280x900/2011/07/19/236600_purple-gradient-backgrounds_1920x1080_h.jpg) no-repeat center center fixed; 
+    /* background: url(https://www.desktopbackground.org/download/1280x900/2011/07/19/236600_purple-gradient-backgrounds_1920x1080_h.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;
+    background-size: cover; */
+    background: #cbc3e3;
 }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

@@ -1,1 +1,40 @@
-<p>viewdocument works!</p>
+<div class="main">
+    
+    <div class="editor-container">
+        <div *ngIf="currentDocument" class="editor-title"><p class="text">{{currentDocument.title}}</p></div>
+        <div class="shared-with"><p class="text">Shared with</p></div>
+        <div *ngIf="currentDocument" class="chip-wrapper">
+          <mat-chip-list aria-label="Dog selection">
+            <!-- If they are online/editing document, display a color -->
+              <mat-chip *ngFor="let member of currentDocument.team" [selected]="false">
+                <img matChipAvatar [src]="member.image?member.image:'../../../assets/Blank-profile.png'" alt="Photo of a Shiba Inu"/>
+                {{member.email}}
+              </mat-chip>
+             
+            </mat-chip-list>
+        </div>
+        <div *ngIf="currentDocument" class="editor-options">
+            <button (click)="onSaveDocument()" mat-raised-button color="primary" class="btn" >Save</button>
+            <button 
+            [disabled]="!permitAccess('modify')"
+            style="background: rgb(221, 221, 221);" 
+            mat-raised-button 
+            color="basic" 
+            class="btn" 
+            >Edit Permissions</button>
+            <button 
+            mat-raised-button 
+            style="background: #dc3545; color: white;" 
+            class="btn" 
+            [disabled]="!permitAccess('admin')"
+            >Delete Document</button>
+            <!-- <button mat-raised-button color="primary">Primary</button> -->
+        </div>
+          <quill-editor 
+          #editor 
+          (onEditorCreated)="onCreate($event)"
+          (onEditorChanged)="handleChange($event)" 
+          class="editor"
+          ></quill-editor>
+    </div>
+</div>

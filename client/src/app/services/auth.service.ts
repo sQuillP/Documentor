@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject, catchError, Observable, Subject, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +16,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     this.jwt = new JwtHelperService();
-    let decodedId  = this.jwt.decodeToken(localStorage.getItem("token")).id;
+    let decodedId = null;
+    if(localStorage.getItem("token"))
+      decodedId  = this.jwt.decodeToken(localStorage.getItem("token")).id;
     this.authToken$ = new BehaviorSubject<string>(localStorage.getItem("token"));
     this.userId$ = new BehaviorSubject<any>(decodedId);
+    
   }
 
 
