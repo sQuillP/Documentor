@@ -26,7 +26,7 @@
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                         </div>
                         <mat-menu #menu="matMenu">
-                            <button (click)="onOpenEditDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
+                            <button (click)="onOpenEditDialog(document)" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
                             <button (click)="onOpenDeleteDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-trash"></i> Remove</button>
                             <button mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
                           </mat-menu>
@@ -41,7 +41,7 @@
         </div>
         <div class="documents-list">
             <div *ngFor="let document of (sharedDocuments$ | async)" class="document">
-                <div class="document-img">
+                <div (click)="onViewDocument(document._id)" class="document-img">
                     <i class="fa-solid fa-file-lines"></i>
                 </div>
                 <div class="document-card">
@@ -54,7 +54,7 @@
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                         </div>
                         <mat-menu #menu="matMenu">
-                            <button (click)="onOpenEditDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
+                            <button (click)="onOpenEditDialog(document)" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
                             <button (click)="onOpenDeleteDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-trash"></i> Remove</button>
                             <button mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
                           </mat-menu>

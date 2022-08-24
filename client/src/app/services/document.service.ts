@@ -7,7 +7,6 @@ import { Observable,map,tap, catchError, throwError } from "rxjs";
 export class DocumentService {
 
     private ENDPOINT = "http://localhost:5000/api/v1/documents"
-
     
 
     constructor(private http: HttpClient){
@@ -31,7 +30,7 @@ export class DocumentService {
     getSharedDocuments():Observable<any> {
         return this.http.get(`${this.ENDPOINT}`,{
             params:{
-                getTeam:"true"
+                findTeam:"true"
             }
         })
         .pipe(
@@ -68,15 +67,6 @@ export class DocumentService {
         .pipe(
             map((response:any)=> response.success),
             catchError(error => throwError(()=>error))
-        );
-    }
-
-
-    /* Change the name of a document, probably remove this method in the future. */
-    editDocumentName(documentId:string, title:string):Observable<any>|null{
-        return this.http.put(`${this.ENDPOINT}/${document}`,{title})
-        .pipe(
-            map((response:any) => response.data)
         );
     }
 

@@ -6,6 +6,9 @@ import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DocumentService } from 'src/app/services/document.service';
 
+
+/* QUILL TO PDF!!! DO NOT FORGET!!! */
+
 @Component({
   selector: 'app-viewdocument',
   templateUrl: './viewdocument.component.html',

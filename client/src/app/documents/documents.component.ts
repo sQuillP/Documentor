@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DocumentService } from '../services/document.service';
@@ -18,11 +19,13 @@ export class DocumentsComponent implements OnInit {
   removeDocId:string = "";
   myDocuments$:Observable<any>;
   sharedDocuments$:Observable<any>;
+  SNACKBAR_DURATION:number = 5000;
 
   constructor(
     private dialog:MatDialog,
     private documentService:DocumentService,
-    private router:Router
+    private router:Router,
+    private snackbar:MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -30,11 +33,10 @@ export class DocumentsComponent implements OnInit {
   }
 
   onCloseOverlay(event:boolean):void{
-    console.log(event)
     this.showOverlay = !event;
   }
 
-  onOpenEditDialog():void{
+  onOpenEditDialog(document:any):void{
     const dialogRef = this.dialog.open(RenamePopupComponent, {
       data: {
         documentName: this.documentName
@@ -42,8 +44,23 @@ export class DocumentsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if(!result) return;
       this.documentName = result;
-    })
+      console.log(document)
+      this.documentService.saveDocument({title:result, _id:document._id})
+      .subscribe({
+        next: (success)=> {
+          this.snackbar.open("Document save successful","OK",{
+            duration: this.SNACKBAR_DURATION
+          });
+          document.title = result;
+        },
+        error: (error) =>{
+          console.log(error);
+        }
+      });
+      
+    });
   }
 
   onFetchDocuments():void{

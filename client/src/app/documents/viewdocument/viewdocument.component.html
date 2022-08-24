@@ -2,7 +2,7 @@
     
     <div class="editor-container">
         <div *ngIf="currentDocument" class="editor-title"><p class="text">{{currentDocument.title}}</p></div>
-        <div class="shared-with"><p class="text">Shared with</p></div>
+        <div *ngIf="currentDocument&&currentDocument.team.length" class="shared-with"><p class="text">Shared with</p></div>
         <div *ngIf="currentDocument" class="chip-wrapper">
           <mat-chip-list aria-label="Dog selection">
             <!-- If they are online/editing document, display a color -->
