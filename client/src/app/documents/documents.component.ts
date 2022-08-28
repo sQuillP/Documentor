@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DocumentService } from '../services/document.service';
 import { DeletePopupComponent } from './delete-popup/delete-popup.component';
+import { EditMembersComponent } from './edit-members/edit-members.component';
 import { RenamePopupComponent } from './rename-popup/rename-popup.component';
 
 @Component({
@@ -39,14 +40,14 @@ export class DocumentsComponent implements OnInit {
   onOpenEditDialog(document:any):void{
     const dialogRef = this.dialog.open(RenamePopupComponent, {
       data: {
-        documentName: this.documentName
+        documentName: document.title
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(!result) return;
       this.documentName = result;
-      console.log(document)
+      console.log(result)
       this.documentService.saveDocument({title:result, _id:document._id})
       .subscribe({
         next: (success)=> {
@@ -76,6 +77,29 @@ export class DocumentsComponent implements OnInit {
       // Logic for removing a document from the db.
         // this.documentService.deleteDocument()
     });
+  }
+
+  onOpenEditMemberDialog(document:any):void {
+    const dialogref = this.dialog.open(EditMembersComponent, {
+      data: {
+        document
+      }
+    });
+
+    dialogref.afterClosed().subscribe((edited:boolean) => {
+      let msg = "";
+      //requery all the documents after change has been made?
+      
+      if(edited)
+        msg = "Document members updated successfully";
+      else
+        msg = "Unable to save changes to members";
+      if(edited)
+        this.snackbar.open(msg,"OK",{
+          duration: this.SNACKBAR_DURATION
+        });
+    })
+
   }
 
   onViewDocument(documentId:string):void{

@@ -13,10 +13,11 @@ export class UserService {
     }
 
 
-    searchUsersByEmail(expression:string):Observable<any>{
+    searchUsersByEmail(expression:string, limit?:number):Observable<any>{
         return this.http.get(`${this.ROUTE}`,{
             params:{
-                email: expression
+                email: expression,
+                limit
             }
         })
         .pipe(

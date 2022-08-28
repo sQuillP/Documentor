@@ -38,6 +38,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { DeletePopupComponent } from './documents/delete-popup/delete-popup.component';
 import { NavPopupComponent } from './navigation/nav-popup/nav-popup.component';
 import {MatChipsModule} from '@angular/material/chips';
+import { EditMembersComponent } from './documents/edit-members/edit-members.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import {MatChipsModule} from '@angular/material/chips';
     RenamePopupComponent,
     DeletePopupComponent,
     NavPopupComponent,
+    EditMembersComponent,
   ],
   imports: [
     BrowserModule,

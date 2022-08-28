@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroupDirective, NgForm, ValidationErrors, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DocumentService } from 'src/app/services/document.service';
 import { UserService } from 'src/app/services/user.service';
+import { forbiddenCharacterValidator } from 'src/app/util/validators';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher{
@@ -14,11 +14,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher{
     return !!(control && control.invalid && (control.dirty || control.touched ));
   }
   
-}
-
-export function forbiddenCharacterValidator(control:AbstractControl):ValidationErrors|null{
-  const invalidInput = /[^a-zA-Z _0-9]/gi.test(control.value);
-  return invalidInput ? {forbiddenCharacter: {value: control.value}}:null;
 }
 
 
@@ -133,7 +128,6 @@ export class NewdocOverlayComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   onCloseComponent():void{
-    console.log('trying to close compnent')
     this.closeComponent.emit(true);
   }
 

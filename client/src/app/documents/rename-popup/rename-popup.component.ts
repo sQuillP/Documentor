@@ -28,8 +28,8 @@ export class RenamePopupComponent implements OnInit {
     public dialogRef:MatDialogRef<RenamePopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) { 
-
-    this.docNameFormControl = new FormControl("",[Validators.required]);
+    console.log(this.data)
+    this.docNameFormControl = new FormControl(data.documentName,[Validators.required]);
     this.matcher = new MyErrorStateMatcher();
   }
 

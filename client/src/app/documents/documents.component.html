@@ -28,7 +28,7 @@
                         <mat-menu #menu="matMenu">
                             <button (click)="onOpenEditDialog(document)" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
                             <button (click)="onOpenDeleteDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-trash"></i> Remove</button>
-                            <button mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
+                            <button (click)="onOpenEditMemberDialog(document)" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
                           </mat-menu>
                     </div>
                 </div>

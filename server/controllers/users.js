@@ -22,7 +22,7 @@ exports.getUsers = asyncHandler( async(req,res,next)=> {
         //sanitize email query before executing.
         req.query.email = req.query.email.replace(/[^0-9a-zA-Z @.]/gi," ")
         let exp = new RegExp(req.query.email);
-        users = await User.find({email: exp});
+        users = await User.find({email: exp}).limit(limit);
     } else
         users = await User.find().limit(limit);
 

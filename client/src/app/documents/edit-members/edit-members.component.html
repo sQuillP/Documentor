@@ -1,0 +1,83 @@
+<h1 mat-dialog-title>Change Permissions & Add members</h1>
+<mat-dialog-content>
+    <mat-progress-bar *ngIf="toggleLoader" mode="query"></mat-progress-bar>
+    <mat-form-field style="width: 100%;" appearance="fill">
+        <mat-label>Search to add member</mat-label>
+        <input
+            autocomplete="off" 
+            style="width: 100%" 
+            (keypress)="onHandleChange($event)" 
+            matInput 
+            [(ngModel)]="emailSearch"
+            [matAutocomplete]="auto"
+            >
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option  *ngFor="let user of (searchResults$|async)">
+                <div class="result">
+                    <div class="result-img">
+                        <img class="img" [src]="user.image?user.image:'../../../assets//Blank-profile.png'" alt="">
+                    </div>
+                    <div class="result-details">
+                        <p class="text name">
+                           {{user.name}}
+                        </p>
+                        <p class="text name">
+                            {{user.email}}
+                        </p>
+                    </div>
+                </div>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <div class="members-list">
+        <div class="member" *ngFor="let member of team">
+            <div class="member-meta">
+                <div class="member-img">
+                    <img class="img" src="../../../assets/Blank-profile.png" alt="">
+                </div>
+                <div class="member-details">
+                    <p class="text name">User 1</p>
+                    <p class="text name">user1@gmail.com</p>
+                </div>
+            </div>
+            <div class="btns">
+                <mat-radio-group>
+                    <mat-radio-button class="btn" value="readonly">readonly</mat-radio-button>
+                    <mat-radio-button class="btn" value="modify">modify</mat-radio-button>
+                    <mat-radio-button class="btn" value="admin">admin</mat-radio-button>
+                </mat-radio-group>
+                <div [matMenuTriggerFor]="menu" class="remove-member">
+                    <i style="font-size:1.2em" class="fa-solid fa-times"></i>
+                </div>
+                <mat-menu #menu>
+                    <button (click)="onRemoveMember('foobar')" mat-menu-item> 
+                        <i class="fa-solid fa-trash"></i> 
+                        Remove user 1 from document
+                    </button>
+                </mat-menu>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+
+
+<!-- <div class="user-details">
+                    <div class="img-wrapper">
+                        <img src="../../../assets/Blank-profile.png" alt="">
+                    </div>
+                    <div class="detail">
+                        <p class="text">user 2</p>
+                    </div>
+                    <div class="detail">
+                        <p class="text">user2@gmail.com</p>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <mat-radio-group>
+                        <mat-radio-button value="readonly">readonly</mat-radio-button>
+                        <mat-radio-button value="modify">modify</mat-radio-button>
+                        <mat-radio-button value="admin">admin</mat-radio-button>
+                    </mat-radio-group>
+                    <div class="close-wrapper">
+                    </div>
+                </div> -->
