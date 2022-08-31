@@ -62,8 +62,8 @@ export class DocumentService {
 
 
 
-    saveDocument(update:any):Observable<any> {
-        return this.http.put(`${this.ENDPOINT}/${update._id}`,update)
+    saveDocument(documentId:string, update:any):Observable<any> {
+        return this.http.put(`${this.ENDPOINT}/${documentId}`,update)
         .pipe(
             map((response:any)=> response.success),
             catchError(error => throwError(()=>error))
@@ -72,7 +72,7 @@ export class DocumentService {
 
 
     /* Remove a document that a user owns. */
-    deleteDocument(documentId:string):Observable<any>|void {
+    deleteDocument(documentId:string):Observable<any> {
         return this.http.delete(`${this.ENDPOINT}/${documentId}`)
         .pipe(
             map(

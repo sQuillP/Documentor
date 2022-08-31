@@ -61,9 +61,17 @@ export class ViewdocumentComponent implements OnInit {
 
 
   onSaveDocument():void{
-    this.documentService.saveDocument({
+
+    /**
+     *  this.documentService.saveDocument({
       content: JSON.stringify(this.currentDocument.content),
       _id: this.currentDocument._id
+    })
+     * 
+     */
+    
+    this.documentService.saveDocument(this.currentDocument._id,{
+      content: JSON.stringify(this.currentDocument.content),
     })
     .subscribe({
       next:(data)=> {

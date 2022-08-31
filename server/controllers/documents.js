@@ -16,16 +16,15 @@ const mongoose = require("mongoose");
  * NOTE: Fix the getDocuments without any params with this route.
  */
 exports.getDocuments = asyncHandler( async (req,res,next)=> {
-    console.log("in documents route")
     let limit = req.params.limit;
     let documents = null;
-    console.log("in req.user before error",req.user);
     if(req.query.findTeam && req.query.findTeam.toLowerCase() === "true"){
         console.log('in findTeam')
-        documents = await Document.find({team: {$in: [req.user._id]}});
+        documents = Document.find({team: {$in: [req.user._id]}});
     }
     else
-        documents = await Document.find({author: req.user._id}).limit(limit || 50);
+        documents = Document.find({author: req.user._id}).limit(limit || 50);
+    documents = await documents.populate("team").populate("permissions");
     res.status(200).json({
         success: true,
         count: documents.length,

@@ -14,11 +14,14 @@ export class UserService {
 
 
     searchUsersByEmail(expression:string, limit?:number):Observable<any>{
+        const paramObject ={
+            email:expression
+        };
+        if(limit)
+            paramObject['limit'] = limit;
+            
         return this.http.get(`${this.ROUTE}`,{
-            params:{
-                email: expression,
-                limit
-            }
+            params:paramObject
         })
         .pipe(
             map((response:any) => {

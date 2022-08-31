@@ -35,7 +35,8 @@
 /* Data for list of members and thier permissions */
 
 .members-list{
-
+    max-height: 175px;
+    overflow-y: auto;
 }
 
 .member{
@@ -43,6 +44,10 @@
     justify-content: space-between;
     align-items: center;
     
+}
+
+.member:hover{
+    background: #efefef
 }
 
 .member-details{
@@ -66,6 +71,8 @@
 
 .btns{
     margin-left: 15px;
+    display: flex;
+    align-items: center;
 }
 
 .btn{margin-left: 5px;}

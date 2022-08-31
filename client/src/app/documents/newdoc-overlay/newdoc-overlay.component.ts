@@ -22,7 +22,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher{
   templateUrl: './newdoc-overlay.component.html',
   styleUrls: ['./newdoc-overlay.component.css']
 })
-export class NewdocOverlayComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NewdocOverlayComponent implements AfterViewInit, OnDestroy {
   
   @ViewChild('overlayRef') overlayRef:ElementRef;
   @ViewChild('inputRef') inputRef:ElementRef;
@@ -104,8 +104,6 @@ export class NewdocOverlayComponent implements OnInit, AfterViewInit, OnDestroy 
     },500)
   }
 
-  ngOnInit(): void {
-  }
 
   onCreateDocument():void{
     const idArr = this.roles.map(role => role.user);

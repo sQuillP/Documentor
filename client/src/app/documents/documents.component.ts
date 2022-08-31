@@ -17,7 +17,6 @@ export class DocumentsComponent implements OnInit {
 
   showOverlay:boolean = false;
   documentName:string = "";
-  removeDocId:string = "";
   myDocuments$:Observable<any>;
   sharedDocuments$:Observable<any>;
   SNACKBAR_DURATION:number = 5000;
@@ -48,7 +47,7 @@ export class DocumentsComponent implements OnInit {
       if(!result) return;
       this.documentName = result;
       console.log(result)
-      this.documentService.saveDocument({title:result, _id:document._id})
+      this.documentService.saveDocument(document._id, {title: result})
       .subscribe({
         next: (success)=> {
           this.snackbar.open("Document save successful","OK",{
@@ -69,13 +68,25 @@ export class DocumentsComponent implements OnInit {
     this.sharedDocuments$ = this.documentService.getSharedDocuments();
   }
 
-  onOpenDeleteDialog():void{
-    const dialogRef = this.dialog.open(DeletePopupComponent);
+  onOpenDeleteDialog(document:any):void{
+    const dialogRef = this.dialog.open(DeletePopupComponent,{
+      data: {
+        title: document.title
+      }
+    });
 
-    dialogRef.afterClosed().subscribe((removeDocument:any) => {
+    dialogRef.afterClosed().subscribe((removeDocument:boolean) => {
         if(!removeDocument) return;
-      // Logic for removing a document from the db.
-        // this.documentService.deleteDocument()
+        this.documentService.deleteDocument(document._id)
+        .subscribe({
+          next: (result)=>{
+            this.onFetchDocuments();
+            this.snackbar.open(`Document: "${document.title}" Has Been Removed`, "OK",{duration:this.SNACKBAR_DURATION});
+          },
+          error: (error)=> {
+            this.snackbar.open(`Unable to remove ${document.title}`,"OK",{duration:this.SNACKBAR_DURATION});
+          }
+        })
     });
   }
 
@@ -86,18 +97,23 @@ export class DocumentsComponent implements OnInit {
       }
     });
 
-    dialogref.afterClosed().subscribe((edited:boolean) => {
+    dialogref.afterClosed().subscribe((data:any) => {
+      if(!data) return;
       let msg = "";
-      //requery all the documents after change has been made?
-      
-      if(edited)
-        msg = "Document members updated successfully";
-      else
-        msg = "Unable to save changes to members";
-      if(edited)
-        this.snackbar.open(msg,"OK",{
-          duration: this.SNACKBAR_DURATION
-        });
+
+      this.documentService.saveDocument(document._id, data).subscribe({
+        next:(success:boolean)=> {
+          console.log(success);
+          if(!success) return;
+          this.onFetchDocuments();
+          this.snackbar.open("Permissions Successfully Updated","OK",{duration: this.SNACKBAR_DURATION});
+        },
+        error: (error)=> {
+          this.snackbar.open("Unable to Save Permissions","OK",{duration: this.SNACKBAR_DURATION});
+        }
+      });
+
+      console.log(!!data);
     })
 
   }
