@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 import { DocumentService } from '../services/document.service';
 import { DeletePopupComponent } from './delete-popup/delete-popup.component';
 import { EditMembersComponent } from './edit-members/edit-members.component';
@@ -18,12 +19,20 @@ export class DocumentsComponent implements OnInit {
   showOverlay:boolean = false;
   documentName:string = "";
   myDocuments$:Observable<any>;
+  myDocuments:any;
   sharedDocuments$:Observable<any>;
+  sharedDocuments:any;
   SNACKBAR_DURATION:number = 5000;
+
+
+  disableRename:boolean = true;
+  disableEditMembers:boolean = true;
+  disableDelete:boolean = true;
 
   constructor(
     private dialog:MatDialog,
     private documentService:DocumentService,
+    private auth:AuthService,
     private router:Router,
     private snackbar:MatSnackBar
   ) {}
@@ -64,9 +73,18 @@ export class DocumentsComponent implements OnInit {
   }
 
   onFetchDocuments():void{
-    this.myDocuments$ = this.documentService.getMyDocuments();
-    this.sharedDocuments$ = this.documentService.getSharedDocuments();
+    this.myDocuments$ = this.documentService.getMyDocuments()
+    .pipe(tap(data=>this.myDocuments = data));
+    this.sharedDocuments$ = this.documentService.getSharedDocuments()
+    .pipe(tap(data => this.sharedDocuments = data));
   }
+
+
+  onDisableBtn(document:any):boolean{
+    if(!this.myDocuments) return false;
+    console.log(this.myDocuments)
+  }
+  
 
   onOpenDeleteDialog(document:any):void{
     const dialogRef = this.dialog.open(DeletePopupComponent,{
@@ -116,6 +134,27 @@ export class DocumentsComponent implements OnInit {
       console.log(!!data);
     })
 
+  }
+
+  /* */
+  onSelectDocumentOptions(document:any):void{
+    let currentAccess = '';
+    for(const permission of document.permissions)
+      if(permission.user === this.auth.authToken$.getValue())
+        currentAccess = permission.access;
+    if(document.author === this.auth.userId$.getValue() || currentAccess === 'admin')
+      this.setDisabledProperties(false, false, false);
+    else if(currentAccess === 'modify')
+      this.setDisabledProperties(false,true,true);
+    else
+      this.setDisabledProperties(true,true,true);
+    
+  }
+
+  private setDisabledProperties(disableRename:boolean, disableEditMembers:boolean, disableDeleteMembers:boolean):void{
+    this.disableRename = disableRename;
+    this.disableEditMembers = disableEditMembers;
+    this.disableDelete = disableDeleteMembers;
   }
 
   onViewDocument(documentId:string):void{

@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Inject, OnDestroy, OnInit } from '@angular/co
 import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { catchError, debounceTime, map, Observable, retryWhen, startWith, Subscription, switchMap, tap } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 import { DocumentService } from 'src/app/services/document.service';
 import { PermissionsService } from 'src/app/services/permissions.service';
 import { UserService } from 'src/app/services/user.service';
@@ -28,6 +29,7 @@ export class EditMembersComponent implements AfterViewInit {
 
   constructor(
     private userService:UserService,
+    private auth:AuthService,
     @Inject(MAT_DIALOG_DATA) public dialogData:any
   ) { 
     console.log(this.dialogData.document);
@@ -67,6 +69,10 @@ export class EditMembersComponent implements AfterViewInit {
           return;
         }
         const foundUser = data[0];
+        if(foundUser._id === this.auth.userId$.getValue()){
+          this.myFormControl.setErrors({userAlreadyAdded:true});
+          return;
+        }
         for(let member of this.documentMembers){ //Make sure there are no duplicates
           if(foundUser._id === member._id){
             this.myFormControl.setErrors({userAlreadyAdded:true});
@@ -79,11 +85,10 @@ export class EditMembersComponent implements AfterViewInit {
         this.myFormControl.setValue(""); //clear form
       },
       error:(error) => {
-        console.log(error)
+        
       }
     });
   }
-
 
 
   onDebug():void{

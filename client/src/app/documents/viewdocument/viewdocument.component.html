@@ -10,25 +10,30 @@
                 <img matChipAvatar [src]="member.image?member.image:'../../../assets/Blank-profile.png'" alt="Photo of a Shiba Inu"/>
                 {{member.email}}
               </mat-chip>
-             
             </mat-chip-list>
         </div>
         <div *ngIf="currentDocument" class="editor-options">
-            <button (click)="onSaveDocument()" mat-raised-button color="primary" class="btn" >Save</button>
             <button 
+            [ngStyle]="{cursor:!permitAccess('modify')?'not-allowed':''}"
             [disabled]="!permitAccess('modify')"
+            (click)="onSaveDocument()" mat-raised-button color="primary" class="btn" >Save</button>
+            <button 
+            [ngStyle]="{cursor:!permitAccess('admin')?'not-allowed':''}"
+            [disabled]="!permitAccess('admin')"
             style="background: rgb(221, 221, 221);" 
             mat-raised-button 
             color="basic" 
-            class="btn" 
+            class="btn"
+            (click)="onEditTeam()" 
             >Edit Permissions</button>
             <button 
+            (click)="onDeleteDocument()"
+            [ngStyle]="{cursor:!permitAccess('admin')?'not-allowed':''}"
             mat-raised-button 
             style="background: #dc3545; color: white;" 
             class="btn" 
             [disabled]="!permitAccess('admin')"
             >Delete Document</button>
-            <!-- <button mat-raised-button color="primary">Primary</button> -->
         </div>
           <quill-editor 
           #editor 

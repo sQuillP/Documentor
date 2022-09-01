@@ -158,7 +158,7 @@ exports.createDocument = asyncHandler( async (req,res,next)=> {
     let newDoc = await Document.findByIdAndUpdate(req.params.documentid,req.body,{
         returnDocument: "after",
         runValidators: true
-    });
+    }).populate('permissions').populate('team');
 
 
     res.status(201).json({

@@ -65,7 +65,7 @@ export class DocumentService {
     saveDocument(documentId:string, update:any):Observable<any> {
         return this.http.put(`${this.ENDPOINT}/${documentId}`,update)
         .pipe(
-            map((response:any)=> response.success),
+            map((response:any)=> response.data),
             catchError(error => throwError(()=>error))
         );
     }
