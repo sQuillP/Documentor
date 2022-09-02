@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl, FormGroupDirective, NgForm, ValidationErrors, Validators } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, Output, Renderer2, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -7,14 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DocumentService } from 'src/app/services/document.service';
 import { UserService } from 'src/app/services/user.service';
 import { forbiddenCharacterValidator } from 'src/app/util/validators';
+import { MyErrorStateMatcher } from 'src/app/util/errorStateMatcher';
 
-
-export class MyErrorStateMatcher implements ErrorStateMatcher{
-  isErrorState(control: AbstractControl<any, any>, form: FormGroupDirective | NgForm): boolean {
-    return !!(control && control.invalid && (control.dirty || control.touched ));
-  }
-  
-}
 
 
 @Component({

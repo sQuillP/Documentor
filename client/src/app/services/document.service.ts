@@ -6,7 +6,7 @@ import { Observable,map,tap, catchError, throwError } from "rxjs";
 @Injectable({providedIn:"root"})
 export class DocumentService {
 
-    private ENDPOINT = "http://localhost:5000/api/v1/documents"
+    private ENDPOINT = "http://localhost:5000/api/v1/documents";
     
 
     constructor(private http: HttpClient){
@@ -72,7 +72,7 @@ export class DocumentService {
 
 
     /* Remove a document that a user owns. */
-    deleteDocument(documentId:string):Observable<any> {
+    deleteDocument(documentId:string):Observable<boolean> {
         return this.http.delete(`${this.ENDPOINT}/${documentId}`)
         .pipe(
             map(

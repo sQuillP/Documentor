@@ -10,6 +10,15 @@
 .editor-title{
     font-size: 4em;
     margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.icon-wrapper{
+    font-size: 0.6em;
+    cursor: pointer;
+    ;
 }
 
 .btn{margin: 0px 10px;}

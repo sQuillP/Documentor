@@ -1,7 +1,18 @@
 <div class="main">
     
     <div class="editor-container">
-        <div *ngIf="currentDocument" class="editor-title"><p class="text">{{currentDocument.title}}</p></div>
+        <div *ngIf="currentDocument" class="editor-title">
+          <p class="text">{{currentDocument.title}}</p> 
+          <div 
+          *ngIf="permitAccess('modify')" 
+          [matTooltip]="'Rename Document'" 
+          class="icon-wrapper" 
+          (click)="onEditTitle()"
+          [ngStyle]="{cursor:!permitAccess('modify')?'not-allowed':''}"
+          >
+            <i class="fa-solid fa-pen-fancy"></i>
+          </div>
+        </div>
         <div *ngIf="currentDocument&&currentDocument.team.length" class="shared-with"><p class="text">Shared with</p></div>
         <div *ngIf="currentDocument" class="chip-wrapper">
           <mat-chip-list aria-label="Dog selection">
