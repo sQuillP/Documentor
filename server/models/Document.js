@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const MessageSchema = require("./Message");
 /**
  * Author has all privileges and cannot have their permissions revoked.
  */
@@ -30,6 +30,11 @@ const DocumentSchema = new mongoose.Schema({
     content: {
         type: String
     },
+    chat:{
+        type: [MessageSchema],
+        default: [],
+        select: false,
+    }
 },{
     timestamps: true,
     toObject: {virtuals: true},

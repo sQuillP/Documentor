@@ -9,14 +9,6 @@
     >
         <i class="fa-solid fa-house"></i>
     </div>
-    <div class="row"
-    matRipple 
-    matTooltip="Invite Users"
-    matTooltipPosition="right"
-    matTooltipHideDelay="250"
-    >
-        <i class="fa-solid fa-users"></i>
-    </div>
     <div class="row" 
     (click)="onNavigate('documents')"
     matRipple
@@ -26,7 +18,9 @@
     >
         <i class="fa-solid fa-file-pen"></i>
     </div>
-    <div class="row" 
+    <div 
+    (click)="onNavigate('chat')"
+    class="row" 
     matRipple
     matTooltip="Chats"
     matTooltipPosition="right"

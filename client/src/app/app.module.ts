@@ -39,6 +39,7 @@ import { DeletePopupComponent } from './documents/delete-popup/delete-popup.comp
 import { NavPopupComponent } from './navigation/nav-popup/nav-popup.component';
 import {MatChipsModule} from '@angular/material/chips';
 import { EditMembersComponent } from './documents/edit-members/edit-members.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { EditMembersComponent } from './documents/edit-members/edit-members.comp
     DeletePopupComponent,
     NavPopupComponent,
     EditMembersComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,6 @@ import { EditMembersComponent } from './documents/edit-members/edit-members.comp
     HttpClientModule,
     ReactiveFormsModule,
 
-    /**Last left off here */
     QuillModule.forRoot({
       modules
     }),
