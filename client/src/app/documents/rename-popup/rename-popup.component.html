@@ -9,8 +9,9 @@
         autocomplete="off" 
         matInput
         >
-        <mat-error *ngIf="docNameFormControl.hasError('maxlength')">New title must be less than 20 characters!</mat-error>
+        <mat-error *ngIf="docNameFormControl.hasError('maxlength')">New title must be less than 25 characters!</mat-error>
         <mat-error *ngIf="docNameFormControl.hasError('required')">Please specify a new name for this document!</mat-error>
+        <mat-error *ngIf="docNameFormControl.hasError('forbiddenCharacter')">Please use alphanumeric characters!</mat-error>
     </mat-form-field>
 </mat-dialog-content>
 <div mat-dialog-actions>

@@ -9,7 +9,6 @@
                 <p class="text new-doc">Create New Document</p>
                 <i class="fas fa-circle-plus i-plus"></i>
             </div>
-            <!-- ngFor loop here for the fetched documents -->
             <div 
             *ngFor="let document of (myDocuments$ | async)" 
             class="document">
@@ -72,15 +71,25 @@
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                         </div>
                         <mat-menu #menu="matMenu">
-                            <button (click)="onOpenEditDialog(document)" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
-                            <button (click)="onOpenDeleteDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-trash"></i> Remove</button>
-                            <button (click)="onOpenMemberDialog()" mat-menu-item class="menu-btn"><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
+                            <button 
+                            (click)="onOpenEditDialog(document)" 
+                            mat-menu-item class="menu-btn"
+                            >
+                            <i class="menu-icon fa-solid fa-wand-magic-sparkles"></i> Rename</button>
+                            <button 
+                            (click)="onOpenDeleteDialog()" 
+                            mat-menu-item class="menu-btn"
+                            ><i class="menu-icon fa-solid fa-trash"></i> Remove</button>
+                            <button 
+                            (click)="onOpenMemberDialog()" 
+                            mat-menu-item class="menu-btn"
+                            ><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
                           </mat-menu>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="empty-message">
+        <div *ngIf="!(sharedDocuments$|async)" class="empty-message">
             <h2 class="text">No Shared Documents</h2>
         </div>
     </div>

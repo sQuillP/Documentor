@@ -46,7 +46,8 @@
             [disabled]="!permitAccess('admin')"
             >Delete Document</button>
         </div>
-          <quill-editor 
+          <quill-editor
+          [readOnly]="readonly$ |async"
           #editor 
           (onEditorCreated)="onCreate($event)"
           (onEditorChanged)="handleChange($event)" 

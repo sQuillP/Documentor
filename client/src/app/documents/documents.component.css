@@ -64,6 +64,10 @@
     transition: box-shadow 100ms linear;
     cursor: pointer;
     overflow: hidden;
+    width: 210px;
+    max-width: 240px;
+    margin-bottom: 20px;;
+
     /* border: 1px solid #dfe1e5; */
 }
 
@@ -110,7 +114,7 @@
     font-size: 1.2em;
 }
 
-.card-title{font-weight: 500;}
+.card-title{font-weight: 500; word-wrap: break-word;}
 .text{padding: 0; margin: 0;}
 .new-doc{margin-bottom: 20px; font-size: 1.3em; }
 .i-plus{font-size: 2.0em;}

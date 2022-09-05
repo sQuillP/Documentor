@@ -3,12 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuillEditorComponent } from 'ngx-quill';
-import { BehaviorSubject, mergeMap, of, tap } from 'rxjs';
+import { BehaviorSubject, map, mergeMap, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DocumentService } from 'src/app/services/document.service';
 import {EditMembersComponent} from '../edit-members/edit-members.component'
 import { DeletePopupComponent } from '../delete-popup/delete-popup.component';
 import { RenamePopupComponent } from '../rename-popup/rename-popup.component';
+import { FormControl } from '@angular/forms';
 /* QUILL TO PDF!!! DO NOT FORGET!!! */
 
 @Component({
@@ -22,9 +23,11 @@ export class ViewdocumentComponent implements OnInit {
 
 
   currentDocument:any = null;
+  form:FormControl;
   myPermission:any = null;
   private readonly SNACKBAR_DURATION:number = 5000;
-  loadedDocument$:BehaviorSubject<any>;
+  loadedDocumentData$ = new BehaviorSubject<any>(null);
+  readonly$ = new BehaviorSubject<boolean>(true);
 
   constructor(
     private documentService:DocumentService,
@@ -33,46 +36,36 @@ export class ViewdocumentComponent implements OnInit {
     private router:Router,
     private auth:AuthService,
     private dialog:MatDialog,
-    ) {
-      this.loadedDocument$ = new BehaviorSubject<any>(null);
-    }
+    ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params:any)=> {
-      this.documentService.getDocumentById(params.documentId)
-      .subscribe({
-        next:(document:any) => {
-          document.content = JSON.parse(document.content); //jsonify data before anything else
-          this.currentDocument = document;
-          for(let permission of document.permissions){
-            if(permission.user === this.auth.userId$.getValue())
-              this.myPermission = permission;
-          }
-          if(this.myPermission && this.myPermission.access === 'readonly')
-            this.editor.readOnly = true;
-          this.loadedDocument$.next(document.content)
-          console.log('loaded document',this.currentDocument);
-        },
-        error: (error)=> {
-          console.log('Unable to fetch document');
-          this.snackbar.open("Something went wrong with opening document","OK");
-          this.router.navigate(["documents"])
+    this.route.params.pipe(
+      mergeMap((params:any)=> this.documentService.getDocumentById(params.documentId)),
+    )
+    .subscribe({
+      next:(document:any) => {
+        document.content = JSON.parse(document.content); //jsonify data before anything else
+        this.currentDocument = document;
+
+        for(let permission of document.permissions){
+          if(permission.user === this.auth.userId$.getValue())
+            this.myPermission = permission;
         }
-      })
-    });
+
+        this.loadedDocumentData$.next(document.content);
+        if(!this.myPermission || this.myPermission.access !== 'readonly')
+          this.readonly$.next(false);
+
+      },
+      error: (error)=> {
+        this.snackbar.open("Something went wrong with opening document","OK");
+        this.router.navigate(["documents"])
+      }
+    })
   }
 
 
   onSaveDocument():void{
-
-    /**
-     *  this.documentService.saveDocument({
-      content: JSON.stringify(this.currentDocument.content),
-      _id: this.currentDocument._id
-    })
-     * 
-     */
-    
     this.documentService.saveDocument(this.currentDocument._id,{
       content: JSON.stringify(this.currentDocument.content),
     })
@@ -99,11 +92,8 @@ export class ViewdocumentComponent implements OnInit {
         documentName: this.currentDocument.title
       }
     });
-
-    /* You left off here. Please allow for deletion to occur */
     dialogRef.afterClosed().pipe(
       mergeMap(data => {
-        console.log(data);
         if(data)
            return this.documentService.saveDocument(this.currentDocument._id,{title: data})
         return of(null);
@@ -122,7 +112,6 @@ export class ViewdocumentComponent implements OnInit {
   }
 
 
-
   handleChange(event:any){
     if(!event.content) return;
     this.currentDocument.content = event.content;
@@ -131,7 +120,7 @@ export class ViewdocumentComponent implements OnInit {
 
   /* Load text editor with contents to be created */
   onCreate(editor:any){
-    this.loadedDocument$.subscribe(delta => {
+    this.loadedDocumentData$.subscribe(delta => {
       if(!delta) return;
       editor.setContents(delta);
     });
@@ -144,27 +133,21 @@ export class ViewdocumentComponent implements OnInit {
         title: this.currentDocument.title
       }
     });
-
-    //could turn the subscribe into a pipe -> switchmap for nested subscriptions.
-    dialogRef.afterClosed().subscribe({
-      next:(close:boolean)=>{
-        if(!close) return;
-        this.documentService.deleteDocument(this.currentDocument._id)
-        .subscribe({
-          next:(success:boolean)=> {
-            this.snackbar.open(`Document ${this.currentDocument.title} has been successfully removed`,'OK',{duration:this.SNACKBAR_DURATION});
-            //PROMPT THE SERVER TO KICK ALL USERS AFTER DELETION.
-            //this.socket.emit('kick-users') 
-            this.router.navigate(['documents']);
-          },
-          error: (error)=> {
-            console.log(error);
-            this.snackbar.open(`Unable to delete "${this.currentDocument.title}".`,"OK",{duration:this.SNACKBAR_DURATION});
-          }
-        })
+    dialogRef.afterClosed().pipe(
+      mergeMap((closed:boolean)=>closed?this.documentService.deleteDocument(this.currentDocument._id):of(false))
+    )
+    .subscribe({
+      next:(success:boolean)=> {
+        this.snackbar.open(`Document ${this.currentDocument.title} has been successfully removed`,'OK',{duration:this.SNACKBAR_DURATION});
+        this.router.navigate(['documents']);
+      },
+      error: (error)=> {
+        console.log(error);
+        this.snackbar.open(`Unable to delete "${this.currentDocument.title}".`,"OK",{duration:this.SNACKBAR_DURATION});
       }
     })
   }
+
 
   onEditTeam():void{
     const dialogRef = this.dialog.open(EditMembersComponent,{
@@ -172,27 +155,22 @@ export class ViewdocumentComponent implements OnInit {
         document: this.currentDocument
       }
     });
-
-    dialogRef.afterClosed().subscribe({
-      next:(data)=> {
-        if(!data) return;
-        this.documentService.saveDocument(this.currentDocument._id,data)
-        .subscribe({
-          next: (document:any)=>{
-            this.currentDocument = document;
-            console.log(this.currentDocument)
-            this.snackbar.open("Document Successfully Updated","OK",{duration: this.SNACKBAR_DURATION});
-          },
-          error: (error:any)=> {
-            console.log(error);
-            this.snackbar.open("Unable to successfully save changes to document","OK",{duration:this.SNACKBAR_DURATION});
-          }
-        })
+    dialogRef.afterClosed().pipe(
+      mergeMap((data:any)=> !data ? of(null) : this.documentService.saveDocument(this.currentDocument._id,data))
+    )
+    .subscribe({
+      next: (document:any)=>{
+        if(!document)return;
+        this.currentDocument = document;
+        console.log(this.currentDocument)
+        this.snackbar.open("Document Successfully Updated","OK",{duration: this.SNACKBAR_DURATION});
+      },
+      error: (error:any)=> {
+        console.log(error);
+        this.snackbar.open("Unable to successfully save changes to document","OK",{duration:this.SNACKBAR_DURATION});
       }
     })
   }
-
-
 
 
 

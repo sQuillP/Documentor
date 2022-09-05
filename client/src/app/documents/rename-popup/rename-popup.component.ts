@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MyErrorStateMatcher } from 'src/app/util/errorStateMatcher';
+import { forbiddenCharacterValidator } from 'src/app/util/validators';
 
 export interface DialogData {
   documentName:string;
@@ -24,7 +25,7 @@ export class RenamePopupComponent {
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) { 
     this.docNameFormControl = new FormControl(data.documentName,
-      [Validators.required, Validators.maxLength(20)]
+      [Validators.required, Validators.maxLength(25), forbiddenCharacterValidator]
     );
     this.matcher = new MyErrorStateMatcher();
   }
