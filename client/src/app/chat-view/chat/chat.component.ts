@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router } from '@angular/router';
+import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { DocumentService } from 'src/app/services/document.service';
 
@@ -16,16 +17,28 @@ export class ChatComponent implements OnInit {
   constructor(
     private router:Router,
     private route:ActivatedRoute,
-    private documentService:DocumentService
+    private documentService:DocumentService,
+    private socket:Socket
   ) { 
     this.route.params.subscribe((params:any)=> {
       this.document$ = this.documentService.getDocumentById(params.chatRoom,{populateMessages:"true"})
     });
 
     this.document$.subscribe(data => console.log(data))
+    this.receiveMessage();
   }
 
   ngOnInit(): void {
+    
+  }
+
+  receiveMessage():void{
+    this.socket.on('receive-message',(message)=> {
+      
+    })
+  }
+
+  onSendMessage():void{
     
   }
 

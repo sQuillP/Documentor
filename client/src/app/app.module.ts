@@ -10,6 +10,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { NewdocOverlayComponent } from './documents/newdoc-overlay/newdoc-overlay.component';
 
+/* Socket io module */
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+
 /* ng-quill module */
 import { QuillModule } from 'ngx-quill'
 import { modules } from './util/quill.config';
@@ -41,6 +44,9 @@ import { EditMembersComponent } from './documents/edit-members/edit-members.comp
 import { ChatComponent } from './chat-view/chat/chat.component';
 import { ChatViewComponent } from './chat-view/chat-view.component';
 
+
+const config:SocketIoConfig = { url: "http://localhost:5000", options: {}};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,11 +69,10 @@ import { ChatViewComponent } from './chat-view/chat-view.component';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-
     QuillModule.forRoot({
       modules
     }),
-
+    SocketIoModule.forRoot(config),
     /* Material UI imports */
     MatRippleModule,
     MatTooltipModule,

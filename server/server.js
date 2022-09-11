@@ -16,6 +16,9 @@ const permissions = require("./routes/permissions");
 const auth = require("./routes/auth");
 const errorHandler = require("./middleware/error");
 
+/* Load Sockets */
+const handleSockets = require("./socket/socket");
+
 /* Load middleware*/
 dotenv.config({path: "./config/config.env"});
 app.use(express.json());
@@ -39,14 +42,10 @@ app.use(errorHandler);
 const socketServer = http.Server(app);
 const PORT = process.env.PORT || 5000;
 socketServer.listen(PORT);
+ 
+io = socketIO(socketServer,{cors:['http://loclahost:4200']});
 
-io = socketIO(socketServer);
+console.log(process.env.PORT)
 
-io.on("connection",(socket)=> {
-    console.log("foo bar")
-})
-
-
-// app.listen(5000, ()=> {
-//     console.log(`Server running on port ${PORT}`.green.bold);
-// });
+handleSockets(io);
+//handleSockets(io);
