@@ -1,0 +1,134 @@
+.main{
+
+    height: 100vh;
+    width: 100%;
+    min-width: 1300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-content{
+    background: white;
+    width: 900px;
+}
+
+.header{
+    color: white;
+    background: var(--app-purple);
+    padding: 20px 0px;
+    text-align: center;
+    position: relative;
+}
+
+
+
+.chat{
+    height: 75vh;
+    background: white;
+    overflow-y: auto;
+    padding: 0px 30px;
+}
+
+.message{
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+    /* min-width: 150px; */
+    margin: 20px 0px;
+    padding: 10px;
+    background: #eee;
+}
+
+.img-wrapper{
+    height: 30px;
+    width: 30px;
+    min-height: 30px;
+    min-width: 30px;
+    overflow: hidden;
+    border-radius: 50%;
+    ;
+}
+
+.user{
+    margin-left: auto;
+}
+
+.other > .img-wrapper{margin-right: 10px;}
+.other{   
+    border-top-left-radius:30px;
+    border-bottom-right-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+
+.user > .img-wrapper{margin-left: 10px;}
+
+.user{
+    border-top-left-radius:30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius:30px;
+    padding-left: 20px;
+}
+
+
+.img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    ;
+}
+
+.content-header{display: flex;}
+
+
+.message-textarea{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    resize: none;
+    outline: none;
+    ;
+    font-size: 1.1em;
+    padding: 20px;
+    padding-right: 60px;
+    border: none;
+    font-family: sans-serif;
+    background: #eee;
+    border-top: 1px solid rgb(31, 31, 31);
+}
+
+.messaging-bar{
+    position: relative;
+    height: 8vh;
+    min-height: 50px;
+    width: 100%;
+}
+
+.icon-wrapper{
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    background: #4c8bf5;
+    cursor: pointer;
+    color: white;
+    font-size: 1.5em;
+}
+
+.nav-back{
+    position: absolute;
+    left: 20px;
+    top: 22px;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.faded{color: gray;}
+
+
+
+
+.text{margin: 0px; padding: 0px;}
+.large{font-size: 1.5em;}

@@ -40,8 +40,11 @@ export class DocumentService {
     }
 
 
-    getDocumentById(id:string):Observable<any> {
-        return this.http.get(`${this.ENDPOINT}/${id}`)
+    getDocumentById(id:string, params:any):Observable<any> {
+
+        return this.http.get(`${this.ENDPOINT}/${id}`,{
+            params 
+        })
         .pipe(
             map((response:any) => response.data),
             catchError(error => throwError(()=>error))

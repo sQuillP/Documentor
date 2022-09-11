@@ -49,10 +49,27 @@ exports.getDocument = asyncHandler( async(req,res,next)=> {
             )
         );
     }
-    let document = await Document.findById(req.params.documentid)
+    let document = Document.findById(req.params.documentid)
     .populate("team")
     .populate("permissions");
 
+    if(req.query.populateMessages){
+        let tmp = req.query.populateMessages;
+        console.log(req.query)
+        if(tmp.toLowerCase() !== "true" && tmp.toLowerCase !== "false"){
+            return next(
+                new ErrorResponse(
+                    `Invalid query parameters 'populateMessages' must be set to 'true' or 'false'`,
+                    400
+                )
+            );
+        }
+
+        document = document.select('+messages');
+    }
+
+    document = await document; 
+    
     if(!document){
         return next(
             new ErrorResponse(
@@ -271,4 +288,4 @@ async function validatePermissionConfig(body){
         isValid = resData.length === body.team.length;
     } catch(error){return false;}
     return isValid;
-}
+} 

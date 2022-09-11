@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { NewdocOverlayComponent } from './documents/newdoc-overlay/newdoc-overlay.component';
@@ -39,13 +38,13 @@ import { DeletePopupComponent } from './documents/delete-popup/delete-popup.comp
 import { NavPopupComponent } from './navigation/nav-popup/nav-popup.component';
 import {MatChipsModule} from '@angular/material/chips';
 import { EditMembersComponent } from './documents/edit-members/edit-members.component';
-import { ChatComponent } from './chat/chat.component';
+import { ChatComponent } from './chat-view/chat/chat.component';
+import { ChatViewComponent } from './chat-view/chat-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent,
     NavigationComponent,
     DocumentsComponent,
     NewdocOverlayComponent,
@@ -55,6 +54,7 @@ import { ChatComponent } from './chat/chat.component';
     NavPopupComponent,
     EditMembersComponent,
     ChatComponent,
+    ChatViewComponent,
   ],
   imports: [
     BrowserModule,

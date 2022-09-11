@@ -40,7 +40,7 @@ export class ViewdocumentComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.pipe(
-      mergeMap((params:any)=> this.documentService.getDocumentById(params.documentId)),
+      mergeMap((params:any)=> this.documentService.getDocumentById(params.documentId,null)),
     )
     .subscribe({
       next:(document:any) => {

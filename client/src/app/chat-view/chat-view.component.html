@@ -1,0 +1,28 @@
+<div class="main">
+    <div class="banner">
+        <h1 class="text text-banner">List of chats</h1>
+    </div>
+
+    <div class="chat-list-wrapper">
+        <div class="table">
+            <div class="header">
+                <div class="th"><p class="text text-header">Document Name</p></div>
+                <div class="th" style="margin-right: 20px"><p class="text text-header"># Members</p></div>
+                <div class="th">
+                    <p class="text text-header"></p>
+                </div>
+            </div>
+            <div *ngFor="let document of fetchedDocuments$|async" class="tr">
+                <div class="td">
+                    <p class="text">{{document.title}}</p>
+                </div>
+                <div class="td">
+                    <p class="text">{{document.team.length}}</p>
+                </div>
+                <div class="td btn">
+                    <button (click)="onNavigate(document._id)" mat-button color="warn">CHAT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

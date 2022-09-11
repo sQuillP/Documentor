@@ -1,0 +1,53 @@
+<div class="main">
+    <div class="main-content">
+        <div class="header">
+            <div class="nav-back" 
+            [matTooltip]="'Go back'" 
+            [matTooltipPosition]="'right'"
+            (click)="onNavigate('chat')"
+            >
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <p class="text large">Document name Group Chat</p>
+        </div>
+        <div class="chat">
+
+
+            <div class="message other">
+                <div class="img-wrapper">
+                    <img class="img" src="../../assets/Blank-profile.png" alt="">
+                </div>
+                <div class="content">
+                    <div class="content-header">
+                        <p class="text"><strong>Eugene Brooks</strong></p>
+                        <p class="text small faded">Jul 27</p>
+                    </div>
+                    <div class="content-body">
+                        <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, ut.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="message user">
+                <div class="content">
+                    <div class="content-header">
+                        <p class="text"><strong>Eugene Brooks</strong></p>
+                        <p class="text small faded">Jul 27</p>
+                    </div>
+                    <div class="content-body">
+                        <p class="text"> nam veniam?</p>
+                    </div>
+                </div>
+                <div class="img-wrapper other">
+                    <img class="img" src="../../assets/Blank-profile.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="messaging-bar">
+            <textarea placeholder="Type your chat here..." class="message-textarea"></textarea>
+            <div class="icon-wrapper" [matTooltip]="'Send message'" [matTooltipPosition]="'right'">
+                <i class="fa-regular fa-solid fa-paper-plane"></i>
+            </div>
+        </div>
+    </div>
+</div>
+ 

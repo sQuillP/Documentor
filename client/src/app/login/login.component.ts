@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next:(data)=> {
           console.log('in data')
-          this.router.navigate(['home']);
+          this.router.navigate(['documents']);
         },
         error: error => {
           console.log(error)

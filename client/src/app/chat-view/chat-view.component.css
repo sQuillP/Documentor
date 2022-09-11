@@ -1,0 +1,62 @@
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.text{
+    margin: 0px;
+    padding: 0px;;
+}
+
+.text-header{
+    font-size: 0.9em;
+    color: gray;
+}
+
+.desc{ font-size: 0.9em; color: gray; }
+
+.banner{margin: 100px 0px}
+
+.chat-list-wrapper{
+    width: 900px;
+}
+
+.table{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: white;
+    max-height: 500px;
+    overflow-y: auto;;
+}
+
+.table::-webkit-scrollbar{display: none;}
+
+.header{
+    position: sticky;
+    top: 0;
+    left: 0;;
+    background: white;
+}
+
+.tr, .header{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #bfbfbf;
+}
+
+.td, .th{
+    padding: 10px 20px;
+    /* text-align: center; */
+    width: 33%;
+}
+
+.btn{text-align: center;}
+.tr{transition: 75ms linear background;}
+
+.tr:hover{
+    background: #eee;
+}
