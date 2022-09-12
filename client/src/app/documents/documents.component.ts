@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { DocumentService } from '../services/document.service';
 import { DeletePopupComponent } from './delete-popup/delete-popup.component';
@@ -23,7 +23,7 @@ export class DocumentsComponent implements OnInit {
   sharedDocuments$:Observable<any>;
   sharedDocuments:any;
   SNACKBAR_DURATION:number = 5000;
-
+ 
 
   disableRename:boolean = true;
   disableEditMembers:boolean = true;
@@ -76,7 +76,7 @@ export class DocumentsComponent implements OnInit {
     this.myDocuments$ = this.documentService.getMyDocuments()
     .pipe(tap(data=>this.myDocuments = data));
     this.sharedDocuments$ = this.documentService.getSharedDocuments()
-    .pipe(tap(data => this.sharedDocuments = data));
+    .pipe(map((data:any) => !data.length?null:data));
   }
 
 

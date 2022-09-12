@@ -56,7 +56,7 @@
         <div class="section-title">
             <h1 class="text">Shared With Me</h1>
         </div>
-        <div class="documents-list">
+        <div *ngIf="(sharedDocuments$|async); else noSharedDocs" class="documents-list">
             <div *ngFor="let document of (sharedDocuments$ | async)" class="document">
                 <div (click)="onViewDocument(document._id)" class="document-img">
                     <i class="fa-solid fa-file-lines"></i>
@@ -81,16 +81,18 @@
                             mat-menu-item class="menu-btn"
                             ><i class="menu-icon fa-solid fa-trash"></i> Remove</button>
                             <button 
-                            (click)="onOpenMemberDialog()" 
+                            (click)="onOpenEditMemberDialog(document)" 
                             mat-menu-item class="menu-btn"
                             ><i class="menu-icon fa-solid fa-people-group"></i> Members</button>
                           </mat-menu>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
-        <div *ngIf="!(sharedDocuments$|async)" class="empty-message">
-            <h2 class="text">No Shared Documents</h2>
-        </div>
+        <ng-template #noSharedDocs>
+            <div class="empty-message">
+                <h2 class="text">No Shared Documents</h2>
+            </div>
+        </ng-template>
     </div>
 </div>

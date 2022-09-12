@@ -41,14 +41,7 @@ exports.getDocuments = asyncHandler( async (req,res,next)=> {
  * @access: public
  */
 exports.getDocument = asyncHandler( async(req,res,next)=> {
-    if(!req.params.documentid){
-        return next(
-            new ErrorResponse(
-                `Missing Parameters`,
-                401
-            )
-        );
-    }
+
     let document = Document.findById(req.params.documentid)
     .populate("team")
     .populate("permissions");
@@ -65,19 +58,10 @@ exports.getDocument = asyncHandler( async(req,res,next)=> {
             );
         }
 
-        document = document.select('+messages');
+        document = document.select('+chat');
     }
 
     document = await document; 
-    
-    if(!document){
-        return next(
-            new ErrorResponse(
-                `Document ${req.params.documentid} was not found`,
-                404
-            )
-        );
-    }
 
     res.status(200).json({
         success: true,
@@ -136,24 +120,10 @@ exports.createDocument = asyncHandler( async (req,res,next)=> {
  * @access: Private
  */
  exports.updateDocument = asyncHandler( async (req,res,next)=> {
-    if(!req.params.documentid){
-        return next(
-            new ErrorResponse(
-                `No documentID specified`,
-                400
-            )
-        );
-    }
+    
     console.log('in update document');
     console.log(req.body)
-    if(!(await Document.findById(req.params.documentid))){
-        return next(
-            new ErrorResponse(
-                `Document ${req.params.documentid} does not exist`,
-                404
-            )
-        );
-    }
+    
     if(req.body.team){
         if(!(await validatePermissionConfig(req.body)))
             return next(

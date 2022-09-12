@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +14,18 @@ export class AuthService {
 
   authToken$:BehaviorSubject<string>;
   userId$:BehaviorSubject<any>;
-
-  constructor(private http: HttpClient) {
-    this.jwt = new JwtHelperService();
-    let decodedId = null;
-    if(localStorage.getItem("token"))
-      decodedId  = this.jwt.decodeToken(localStorage.getItem("token")).id;
-    this.authToken$ = new BehaviorSubject<string>(localStorage.getItem("token"));
-    this.userId$ = new BehaviorSubject<any>(decodedId);
-    
+  user$ = new BehaviorSubject<any>(null);
+  constructor(
+    private http: HttpClient,
+    private socket:Socket
+    ) 
+    {
+      this.jwt = new JwtHelperService();
+      let decodedId = null;
+      // if(localStorage.getItem("token"))
+      //   decodedId  = this.jwt.decodeToken(localStorage.getItem("token")).id;
+      this.authToken$ = new BehaviorSubject<string>(null/*localStorage.getItem("token")*/);
+      this.userId$ = new BehaviorSubject<any>(decodedId);
   }
 
 
@@ -30,15 +34,15 @@ export class AuthService {
       .pipe(
         tap(({success,data}:any) => {
             console.log(data)
-            localStorage.setItem("token",data);
+            // localStorage.setItem("token",data);
             this.authToken$.next(data);
             this.userId$.next(this.jwt.decodeToken(data).id);
+            this.socket.emit('connect-user',this.userId$.getValue());
         }),
         catchError(
           (err)=> throwError(()=>err)
         )
       );
-
   }
 
 
@@ -51,16 +55,8 @@ export class AuthService {
       );
   }
 
-/**
- * .subscribe((response:any)=> {
-        if(response.success){
-          this.authToken$.next(null);
-          localStorage.setItem("token",null);
-        }
-        observer.next(response.success);
-        observer.complete();
-      });
- */
-
+  getMe():Observable<any>{
+    return this.http.get(`${this.ENDPOINT}/getme`).pipe(map((response:any) => response.data));
+  }
 
 }

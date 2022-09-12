@@ -1,6 +1,6 @@
 <div class="main">
     <div class="banner">
-        <h1 class="text text-banner">List of chats</h1>
+        <h1 class="text text-banner">Document Chat List</h1>
     </div>
 
     <div class="chat-list-wrapper">
@@ -12,17 +12,41 @@
                     <p class="text text-header"></p>
                 </div>
             </div>
-            <div *ngFor="let document of fetchedDocuments$|async" class="tr">
-                <div class="td">
-                    <p class="text">{{document.title}}</p>
+            <div *ngIf="(myFetchedDocuments$|async) || (fetchedDocuments$|async); else  noChats ">
+                <div *ngFor="let document of myFetchedDocuments$|async" class="tr">
+                    <div class="td">
+                        <p class="text">{{document.title}}</p>
+                    </div>
+                    <div class="td">
+                        <p class="text">{{document.team.length+1}}</p>
+                    </div>
+                    <div class="td btn">
+                        <button (click)="onNavigate(document._id)" mat-button color="warn">CHAT</button>
+                    </div>
                 </div>
-                <div class="td">
-                    <p class="text">{{document.team.length}}</p>
-                </div>
-                <div class="td btn">
-                    <button (click)="onNavigate(document._id)" mat-button color="warn">CHAT</button>
+
+                <div *ngFor="let document of fetchedDocuments$|async" class="tr">
+                    <div class="td">
+                        <p class="text">{{document.title}}</p>
+                    </div>
+                    <div class="td">
+                        <p class="text">{{document.team.length+1}}</p>
+                    </div>
+                    <div class="td btn">
+                        <button (click)="onNavigate(document._id)" mat-button color="warn">CHAT</button>
+                    </div>
                 </div>
             </div>
+            <ng-template #noChats>
+                <div class="no-chats">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="message">
+                        <p class="text">You have no chats. Start inviting members to your document</p>
+                    </div>
+                </div>
+            </ng-template>
         </div>
     </div>
 </div>

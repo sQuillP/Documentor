@@ -6,6 +6,13 @@ const MessageSchema = new mongoose.Schema({
         ref:"User",
         required: [true,`Please specify author`],
     },
+    name: {
+        type:String,
+        required:[true, 'Please add a name']
+    },
+    img:{
+        type:String
+    },
     content:{
         type:String,
         default: ""

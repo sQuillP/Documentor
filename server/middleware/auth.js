@@ -3,7 +3,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const ErrorResponse = require("../utils/ErrorResponse");
 const Document = require("../models/Document");
-
+const mongoose = require('mongoose')
 
 /**
  * @desc: Make sure user is logged in before accessing route
@@ -47,6 +47,13 @@ exports.authenticate = async (req,res,next)=> {
  */
 exports.permit = (...permissions) => async (req,res,next)=> {
     if(req.params.documentid){
+        if(!mongoose.Types.ObjectId.isValid(req.params.documentid))
+            return next(
+                new ErrorResponse(
+                    `Invalid document id`,
+                    400
+                )
+            )
         const document = await Document.findById(req.params.documentid);
         if(!document)
             return next(

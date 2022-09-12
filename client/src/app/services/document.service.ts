@@ -16,11 +16,9 @@ export class DocumentService {
 
     /* Get documents created by user */
     getMyDocuments():Observable<any> {
-        console.log('calling getmydocuments')
         return this.http.get(`${this.ENDPOINT}`)
         .pipe(
             map((response:any) => response.data),
-            tap(data=> console.log(data)),
             catchError(error => throwError(()=> error))
         );
     }

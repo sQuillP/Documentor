@@ -39,6 +39,20 @@ exports.login = asyncWrapper( async (req,res,next)=> {
 });
 
 
+/*
+* @test: false
+* @desc: Get the account details associated with the logged in user
+* @route: GET /api/v1/auth/getMe
+* @access: private
+*/
+exports.getMe = asyncWrapper( async(req,res,next)=> {
+    const me = await User.findById(req.user._id);
+    res.status(200).json({
+        success:true,
+        data: me
+    });
+});
+
 
 /**
  * @test: false

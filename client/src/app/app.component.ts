@@ -11,11 +11,10 @@ export class AppComponent {
 
   token:string = null;
 
-  constructor(private auth:AuthService, private socket:Socket){
+  constructor(private auth:AuthService){
     this.auth.authToken$.subscribe(token=> {
       this.token = token
-    });
-    this.socket.emit('connect-user',this.auth.userId$.getValue());
+    }); 
   }
   title = 'client';
 }
