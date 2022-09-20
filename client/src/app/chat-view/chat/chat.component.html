@@ -10,38 +10,41 @@
             </div>
             <p class="text large">Document name Group Chat</p>
         </div>
+       
         <div class="chat">
-            <div class="divider">
-                <div class="message other">
-                    <div class="img-wrapper">
-                        <img class="img" src="../../assets/Blank-profile.png" alt="">
-                    </div>
-                    <div class="content">
-                        <div class="content-header">
-                            <p class="text"><strong>Eugene Brooks</strong></p>
-                            <p class="text small faded">Jul 27</p>
+            <div *ngFor="let chat of (chat$|async)">
+                <div *ngIf="user$|async" class="divider" [ngClass]="{'divider-user':chat.author===(user$.getValue()._id)}">
+                    <div class="message" [ngClass]="{'other':chat.author === user$.getValue()._id}">
+                        <div class="img-wrapper">
+                            <img class="img" [src]="chat.image?chat.image:'../../assets/Blank-profile.png'" alt="">
                         </div>
-                        <div class="content-body">
-                            <p class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, ut.</p>
+                        <div class="content">
+                            <div class="content-header">
+                                <p class="text"><strong>{{chat.name}}</strong></p>
+                                <p class="text small faded">Jul 27</p>
+                            </div>
+                            <div class="content-body">
+                                <p class="text">{{chat.content}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="divider divider-user">
-                <div class="message user">
-                    <div class="content">
-                        <div class="content-header">
-                            <p class="text"><strong>Eugene Brooks</strong></p>
-                            <p class="text small faded">Jul 27</p>
+                <!-- <div class="divider divider-user">
+                    <div class="message user">
+                        <div class="content">
+                            <div class="content-header">
+                                <p class="text"><strong>{{chat.name}}</strong></p>
+                                <p class="text small faded">Jul 27</p>
+                            </div>
+                            <div class="content-body">
+                                <p class="text">{{chat.content}}</p>
+                            </div>
                         </div>
-                        <div class="content-body">
-                            <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure rem voluptatem dolore officiis maiores obcaecati aut temporibus natus nesciunt modi. Ut, dicta saepe!</p>
+                        <div class="img-wrapper other">
+                            <img class="img" src="../../assets/Blank-profile.png" alt="">
                         </div>
                     </div>
-                    <div class="img-wrapper other">
-                        <img class="img" src="../../assets/Blank-profile.png" alt="">
-                    </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="messaging-bar">

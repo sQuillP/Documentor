@@ -27,25 +27,22 @@ export class ChatComponent implements OnInit {
     private auth:AuthService
   ) { 
 
-    this.auth.getMe().subscribe({
-      next:(user)=> this.user$.next(user)
-    })
-
     this.route.params.pipe(
       mergeMap((params:any) => this.documentService.getDocumentById(params.chatRoom,{populateMessages:"true"})),
-      tap(data => console.log(data)),
-      map(data => data.chat),
+      mergeMap((data)=> {
+        this.chat$.next(data.chat);
+        return this.auth.getMe();
+      }),
       catchError(error => {
         this.snackbar.open("Unable to open chat / Invalid ID","OK",{
           duration: 3000
-        })
+        });
         this.router.navigate(["documents"]);
         return throwError(()=> error);
       })
     ).subscribe({
-      next: (chat:any)=> {
-        console.log(chat);
-        this.chat$.next(chat);
+      next: (user:any)=> {
+        this.user$.next(user);
       },
       error: (error)=> {
         console.log('unable to retrieve params');
