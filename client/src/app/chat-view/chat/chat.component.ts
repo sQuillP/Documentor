@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { BehaviorSubject, catchError, map, mergeMap, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, delay, map, mergeMap, Observable, tap, throwError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DocumentService } from 'src/app/services/document.service';
 
@@ -11,11 +11,13 @@ import { DocumentService } from 'src/app/services/document.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, AfterViewInit {
 
-  
+  @ViewChild('chatRef')chatRef:ElementRef;
+
   chat$ = new BehaviorSubject<any>(null);
   user$ = new BehaviorSubject<any>(null);
+  documentId$ = new BehaviorSubject<any>(null);
   message:string;
 
   constructor(
@@ -30,6 +32,7 @@ export class ChatComponent implements OnInit {
     this.route.params.pipe(
       mergeMap((params:any) => this.documentService.getDocumentById(params.chatRoom,{populateMessages:"true"})),
       mergeMap((data)=> {
+        this.documentId$.next(data._id);
         this.chat$.next(data.chat);
         return this.auth.getMe();
       }),
@@ -40,9 +43,11 @@ export class ChatComponent implements OnInit {
         this.router.navigate(["documents"]);
         return throwError(()=> error);
       })
-    ).subscribe({
+    )
+    .subscribe({
       next: (user:any)=> {
         this.user$.next(user);
+      
       },
       error: (error)=> {
         console.log('unable to retrieve params');
@@ -56,10 +61,16 @@ export class ChatComponent implements OnInit {
     
   }
 
+
+  ngAfterViewInit(): void {
+
+  }
+
   receiveMessage():void{
     this.socket.on('receive-message',(message)=> {
+      console.log(message);
       this.chat$.next([...this.chat$.getValue(),message]);
-    })
+    });
   }
 
   onSendMessage():void{
@@ -71,8 +82,12 @@ export class ChatComponent implements OnInit {
       seenBy: [],
       createdAt: Date.now()
     };
-    this.socket.emit('send-message',message);
-    this.message = "";
+    if(this.documentId$.getValue() !== null){
+      console.log('sending message');
+      this.socket.emit('send-message',this.documentId$.getValue(),message);
+      this.message = "";
+    }
+    this.chatRef.nativeElement.scrollTop = this.chatRef.nativeElement.scrollHeight;
   }
 
 

@@ -10,41 +10,28 @@
             </div>
             <p class="text large">Document name Group Chat</p>
         </div>
-       
-        <div class="chat">
+        <div #chatRef class="chat">
             <div *ngFor="let chat of (chat$|async)">
-                <div *ngIf="user$|async" class="divider" [ngClass]="{'divider-user':chat.author===(user$.getValue()._id)}">
-                    <div class="message" [ngClass]="{'other':chat.author === user$.getValue()._id}">
-                        <div class="img-wrapper">
+                <div *ngIf="user$|async" class="divider" [ngClass]="{'divider-user':chat.author===user$.getValue()._id}">
+                    <div class="message" [ngClass]="{'other':chat.author !== user$.getValue()._id,'user':chat.author === user$.getValue()._id}">
+                        <div *ngIf="chat.author !== user$.getValue()._id" class="img-wrapper">
                             <img class="img" [src]="chat.image?chat.image:'../../assets/Blank-profile.png'" alt="">
                         </div>
                         <div class="content">
                             <div class="content-header">
                                 <p class="text"><strong>{{chat.name}}</strong></p>
-                                <p class="text small faded">Jul 27</p>
+                                <p class="text small faded">December 17</p>
                             </div>
                             <div class="content-body">
                                 <p class="text">{{chat.content}}</p>
                             </div>
+                        </div>
+                        <div *ngIf="chat.author === user$.getValue()._id" class="img-wrapper">
+                            <img class="img" [src]="chat.image?chat.image:'../../assets/Blank-profile.png'" alt="">
                         </div>
                     </div>
                 </div>
-                <!-- <div class="divider divider-user">
-                    <div class="message user">
-                        <div class="content">
-                            <div class="content-header">
-                                <p class="text"><strong>{{chat.name}}</strong></p>
-                                <p class="text small faded">Jul 27</p>
-                            </div>
-                            <div class="content-body">
-                                <p class="text">{{chat.content}}</p>
-                            </div>
-                        </div>
-                        <div class="img-wrapper other">
-                            <img class="img" src="../../assets/Blank-profile.png" alt="">
-                        </div>
-                    </div>
-                </div> -->
+                <!-- comment block goes here -->
             </div>
         </div>
         <div class="messaging-bar">
@@ -55,4 +42,3 @@
         </div>
     </div>
 </div>
- 

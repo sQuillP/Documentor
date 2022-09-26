@@ -28,6 +28,13 @@ const clearDB = async ()=> {
     }
 }
 
+const seedUser = async () => {
+    let users = JSON.parse(fs.readFileSync("./_data/users.json","utf-8"));
+    await User.insertMany(users);
+    console.log('Seeded database with users'.green.bold);
+    process.exit();
+}
+
 // 
 const users = [];
 const seedDB = async ()=> {
@@ -42,9 +49,13 @@ const seedDB = async ()=> {
 
 if(process.argv[2] === '-d')
     clearDB();
-else if(process.argv[2] ==='-i')
+else if(process.argv[2] ==='-i'){
     seedDB();
+}
+else if(process.argv[2] == '-user'){
+    seedUser();
+}
 else{
-    console.log("USE: node seeder.js -<d|i>".yellow.bold);
+    console.log("USE: node seeder.js -<d|i|user>".yellow.bold);
     process.exit();
 }

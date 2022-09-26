@@ -48,10 +48,13 @@
         </div>
           <quill-editor
           [readOnly]="readonly$ |async"
-          #editor 
           (onEditorCreated)="onCreate($event)"
           (onEditorChanged)="handleChange($event)" 
+          #editor
           class="editor"
+          
           ></quill-editor>
+
+          <!-- [contentEditable]="currentDocument.content" -->
     </div>
 </div>

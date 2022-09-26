@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuillEditorComponent } from 'ngx-quill';
-import { BehaviorSubject, map, mergeMap, of } from 'rxjs';
+import { BehaviorSubject, fromEvent, map, mergeMap, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DocumentService } from 'src/app/services/document.service';
 import {EditMembersComponent} from '../edit-members/edit-members.component'
 import { DeletePopupComponent } from '../delete-popup/delete-popup.component';
 import { RenamePopupComponent } from '../rename-popup/rename-popup.component';
 import { FormControl } from '@angular/forms';
+import { Socket } from 'ngx-socket-io';
 /* QUILL TO PDF!!! DO NOT FORGET!!! */
 
 @Component({
@@ -17,18 +18,19 @@ import { FormControl } from '@angular/forms';
   templateUrl: './viewdocument.component.html',
   styleUrls: ['./viewdocument.component.css']
 })
-export class ViewdocumentComponent implements OnInit {
+export class ViewdocumentComponent implements OnInit, AfterViewInit {
 
-  @ViewChild("editor",{static:true}) editor:QuillEditorComponent;
-
+  @ViewChild("editor",{static:true}) editor:ElementRef;
+  quillEditor:any;
 
   currentDocument:any = null;
   form:FormControl;
   myPermission:any = null;
+  keyPressed:boolean = false;
   private readonly SNACKBAR_DURATION:number = 5000;
   loadedDocumentData$ = new BehaviorSubject<any>(null);
   readonly$ = new BehaviorSubject<boolean>(true);
-
+  listener:()=>void;
   constructor(
     private documentService:DocumentService,
     private route:ActivatedRoute,
@@ -36,7 +38,11 @@ export class ViewdocumentComponent implements OnInit {
     private router:Router,
     private auth:AuthService,
     private dialog:MatDialog,
-    ) {}
+    private socket:Socket,
+    private renderer:Renderer2
+    ) {
+      this.receiveLiveDocumentChanges();
+    }
 
   ngOnInit(): void {
     this.route.params.pipe(
@@ -62,6 +68,13 @@ export class ViewdocumentComponent implements OnInit {
         this.router.navigate(["documents"])
       }
     })
+  }
+
+
+  ngAfterViewInit(): void {
+      this.listener = this.renderer.listen(this.editor.nativeElement,'click',(keypress)=> {
+        this.keyPressed = true;
+      })
   }
 
 
@@ -112,17 +125,34 @@ export class ViewdocumentComponent implements OnInit {
   }
 
 
-  handleChange(event:any){
-    if(!event.content) return;
+  handleChange(event:any):void{
+    if(!event.content || !this.keyPressed) return;
+    console.log(event);
     this.currentDocument.content = event.content;
+    this.socket.emit('modify-document',this.currentDocument._id,JSON.stringify(event.content.ops));
+    this.keyPressed = false;
   }
+
+
+  receiveLiveDocumentChanges():void{
+    this.socket.on('add-document-changes',(documentChanges)=> {
+      documentChanges = JSON.parse(documentChanges);
+      console.log(documentChanges);
+      console.log(this.editor);
+      // this.quillEditor.setContents(documentChanges);
+      this.currentDocument.content = {ops:documentChanges};
+    });
+  }
+
 
 
   /* Load text editor with contents to be created */
   onCreate(editor:any){
+    this.quillEditor = editor;
     this.loadedDocumentData$.subscribe(delta => {
       if(!delta) return;
       editor.setContents(delta);
+      
     });
   }
 

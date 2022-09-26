@@ -22,9 +22,11 @@ export class AuthService {
     {
       this.jwt = new JwtHelperService();
       let decodedId = null;
-      // if(localStorage.getItem("token"))
-      //   decodedId  = this.jwt.decodeToken(localStorage.getItem("token")).id;
-      this.authToken$ = new BehaviorSubject<string>(null/*localStorage.getItem("token")*/);
+      if(localStorage.getItem("token")){
+        decodedId  = this.jwt.decodeToken(localStorage.getItem("token")).id;
+        this.socket.emit('connect-user',decodedId);
+      }
+      this.authToken$ = new BehaviorSubject<string>(localStorage.getItem("token"));
       this.userId$ = new BehaviorSubject<any>(decodedId);
   }
 
@@ -33,8 +35,8 @@ export class AuthService {
       return this.http.post(`${this.ENDPOINT}/${mode}`,{email,password})
       .pipe(
         tap(({success,data}:any) => {
-            console.log(data)
-            // localStorage.setItem("token",data);
+            console.log(data) 
+            localStorage.setItem("token",data);
             this.authToken$.next(data);
             this.userId$.next(this.jwt.decodeToken(data).id);
             this.socket.emit('connect-user',this.userId$.getValue());
